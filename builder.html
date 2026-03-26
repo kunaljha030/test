@@ -1,0 +1,1546 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CreditIQ — Feature Builder</title>
+<style>
+/* ─── RESET & BASE ──────────────────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --bg:        #0d1117;
+  --bg2:       #161b22;
+  --bg3:       #1c2333;
+  --border:    #30363d;
+  --border2:   #21262d;
+  --text:      #e6edf3;
+  --text2:     #8b949e;
+  --text3:     #6e7681;
+  --blue:      #58a6ff;
+  --blue-dim:  #1f3858;
+  --green:     #3fb950;
+  --green-dim: #122d1a;
+  --orange:    #d29922;
+  --orange-dim:#2d2007;
+  --red:       #f85149;
+  --red-dim:   #3d1c1b;
+  --purple:    #bc8cff;
+  --purple-dim:#2b1f42;
+  --radius:    8px;
+  --radius-lg: 12px;
+  --shadow:    0 4px 24px rgba(0,0,0,0.4);
+}
+html, body { height: 100%; background: var(--bg); color: var(--text); font-family: -apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-serif; font-size: 14px; line-height: 1.5; }
+a { color: var(--blue); text-decoration: none; }
+button { cursor: pointer; font-family: inherit; font-size: 13px; border: none; outline: none; }
+
+/* ─── SCROLLBAR ─────────────────────────────────────────────────────────── */
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: var(--bg); }
+::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+
+/* ─── LAYOUT ────────────────────────────────────────────────────────────── */
+.app { display: flex; flex-direction: column; height: 100vh; overflow: hidden; }
+
+/* TOPBAR */
+.topbar {
+  display: flex; align-items: center; gap: 16px;
+  padding: 0 20px; height: 52px;
+  background: var(--bg2); border-bottom: 1px solid var(--border);
+  flex-shrink: 0; z-index: 100;
+}
+.topbar-logo { display: flex; align-items: center; gap: 8px; font-weight: 700; font-size: 16px; color: var(--text); }
+.topbar-logo span { color: var(--blue); }
+.topbar-sep { width: 1px; height: 20px; background: var(--border); }
+.topbar-nav { display: flex; gap: 4px; }
+.topbar-nav a {
+  padding: 5px 12px; border-radius: 6px; font-size: 13px; color: var(--text2);
+  transition: background .15s, color .15s;
+}
+.topbar-nav a:hover { background: var(--bg3); color: var(--text); }
+.topbar-nav a.active { background: var(--blue-dim); color: var(--blue); }
+.topbar-right { margin-left: auto; display: flex; align-items: center; gap: 10px; }
+
+/* Build selector */
+.build-selector { display: flex; align-items: center; gap: 6px; }
+.build-selector label { font-size: 12px; color: var(--text2); white-space: nowrap; }
+.build-selector select, .build-selector input {
+  background: var(--bg3); border: 1px solid var(--border); color: var(--text);
+  border-radius: 6px; padding: 5px 10px; font-size: 13px; outline: none;
+  transition: border-color .2s;
+}
+.build-selector select:focus, .build-selector input:focus { border-color: var(--blue); }
+
+/* MAIN 3-PANE */
+.main { display: flex; flex: 1; overflow: hidden; }
+
+/* LEFT SIDEBAR */
+.sidebar {
+  width: 240px; flex-shrink: 0; border-right: 1px solid var(--border);
+  background: var(--bg2); display: flex; flex-direction: column; overflow: hidden;
+}
+.sidebar-head {
+  padding: 14px 16px 10px; font-size: 11px; font-weight: 600;
+  color: var(--text3); letter-spacing: .06em; text-transform: uppercase;
+  border-bottom: 1px solid var(--border2); flex-shrink: 0;
+}
+.sidebar-head .count { float: right; color: var(--blue); font-weight: 700; }
+.var-list { flex: 1; overflow-y: auto; padding: 8px; }
+.var-item {
+  display: flex; align-items: flex-start; gap: 8px;
+  padding: 8px 10px; border-radius: 6px; cursor: pointer;
+  transition: background .15s; margin-bottom: 2px;
+}
+.var-item:hover { background: var(--bg3); }
+.var-item.active { background: var(--blue-dim); }
+.var-item-icon { font-size: 14px; flex-shrink: 0; margin-top: 1px; }
+.var-item-body { flex: 1; min-width: 0; }
+.var-item-name { font-size: 12px; font-weight: 600; color: var(--text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.var-item-meta { font-size: 11px; color: var(--text3); margin-top: 1px; }
+.var-item-del {
+  background: none; color: var(--text3); padding: 2px 4px; border-radius: 4px;
+  font-size: 13px; line-height: 1; flex-shrink: 0; opacity: 0; transition: opacity .15s, color .15s;
+}
+.var-item:hover .var-item-del { opacity: 1; }
+.var-item-del:hover { color: var(--red); }
+
+.sidebar-empty { padding: 24px 16px; text-align: center; color: var(--text3); font-size: 12px; }
+.sidebar-empty-icon { font-size: 28px; margin-bottom: 8px; }
+
+.sidebar-foot { border-top: 1px solid var(--border2); padding: 12px; flex-shrink: 0; display: flex; flex-direction: column; gap: 6px; }
+
+/* BUILDER PANEL */
+.builder {
+  flex: 1; overflow-y: auto; padding: 24px 28px;
+  background: var(--bg);
+}
+.builder-inner { max-width: 780px; margin: 0 auto; }
+.section-title {
+  font-size: 11px; font-weight: 600; letter-spacing: .06em; text-transform: uppercase;
+  color: var(--text3); margin-bottom: 10px;
+}
+
+/* STEP BADGES */
+.step-badge {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 20px; height: 20px; border-radius: 50%; background: var(--blue-dim);
+  color: var(--blue); font-size: 11px; font-weight: 700; margin-right: 6px; flex-shrink: 0;
+}
+
+/* TYPE CARDS */
+.type-grid {
+  display: grid; grid-template-columns: repeat(4,1fr); gap: 10px; margin-bottom: 24px;
+}
+.type-card {
+  background: var(--bg3); border: 2px solid var(--border);
+  border-radius: var(--radius-lg); padding: 14px; cursor: pointer;
+  transition: border-color .2s, background .2s; text-align: center;
+}
+.type-card:hover { border-color: var(--blue); background: var(--bg2); }
+.type-card.selected { border-color: var(--blue); background: var(--blue-dim); }
+.type-card .icon { font-size: 22px; margin-bottom: 6px; display: block; }
+.type-card .label { font-size: 13px; font-weight: 600; color: var(--text); }
+.type-card .desc { font-size: 11px; color: var(--text3); margin-top: 3px; line-height: 1.3; }
+
+/* FORM ROWS */
+.form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 20px; }
+.form-group { display: flex; flex-direction: column; gap: 5px; }
+.form-group.full { grid-column: 1/-1; }
+.form-label { font-size: 11px; color: var(--text2); font-weight: 500; display: flex; align-items: center; }
+.form-select, .form-input {
+  background: var(--bg3); border: 1px solid var(--border);
+  color: var(--text); border-radius: var(--radius); padding: 8px 12px;
+  font-size: 13px; outline: none; width: 100%;
+  transition: border-color .2s;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%238b949e' stroke-width='2'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 10px center;
+  padding-right: 32px;
+}
+.form-select:focus, .form-input:focus { border-color: var(--blue); }
+.form-select:disabled, .form-input:disabled { opacity: .45; cursor: not-allowed; }
+.form-input { background-image: none; padding-right: 12px; }
+
+/* PILL BUTTONS (aggregation, time window) */
+.pill-group { display: flex; flex-wrap: wrap; gap: 6px; }
+.pill {
+  background: var(--bg3); border: 1px solid var(--border);
+  color: var(--text2); border-radius: 20px; padding: 5px 14px;
+  font-size: 12px; font-weight: 500; cursor: pointer;
+  transition: all .15s;
+}
+.pill:hover { border-color: var(--blue); color: var(--text); }
+.pill.selected { background: var(--blue-dim); border-color: var(--blue); color: var(--blue); }
+.pill:disabled { opacity: .4; cursor: not-allowed; }
+
+/* LOAN TYPE CHIPS */
+.chip-group { display: flex; flex-wrap: wrap; gap: 6px; }
+.chip {
+  background: var(--bg3); border: 1px solid var(--border);
+  color: var(--text2); border-radius: 6px; padding: 4px 10px;
+  font-size: 12px; cursor: pointer; transition: all .15s;
+}
+.chip:hover { border-color: var(--blue); color: var(--text); }
+.chip.selected { background: var(--blue-dim); border-color: var(--blue); color: var(--blue); font-weight: 600; }
+
+/* SECURED TOGGLE */
+.toggle-group { display: flex; gap: 4px; }
+.toggle-btn {
+  background: var(--bg3); border: 1px solid var(--border);
+  color: var(--text2); border-radius: 6px; padding: 5px 14px; font-size: 12px; cursor: pointer;
+  transition: all .15s;
+}
+.toggle-btn:hover { border-color: var(--blue); }
+.toggle-btn.selected { background: var(--blue-dim); border-color: var(--blue); color: var(--blue); font-weight: 600; }
+
+/* THRESHOLD SECTION */
+.threshold-box {
+  background: var(--bg3); border: 1px solid var(--orange);
+  border-radius: var(--radius); padding: 14px 16px; margin-bottom: 20px;
+}
+.threshold-label {
+  font-size: 11px; font-weight: 600; color: var(--orange); margin-bottom: 10px;
+  text-transform: uppercase; letter-spacing: .05em;
+}
+.threshold-row { display: flex; align-items: center; gap: 8px; }
+.threshold-op {
+  background: var(--bg); border: 1px solid var(--border);
+  color: var(--text); border-radius: 6px; padding: 6px 10px; font-size: 13px;
+  outline: none; cursor: pointer;
+}
+.threshold-val {
+  background: var(--bg); border: 1px solid var(--border);
+  color: var(--text); border-radius: 6px; padding: 6px 10px; font-size: 13px;
+  outline: none; width: 120px;
+}
+.threshold-val:focus, .threshold-op:focus { border-color: var(--orange); }
+.threshold-hint { font-size: 11px; color: var(--text3); margin-left: 4px; }
+
+/* FEATURE NAME */
+.name-box {
+  display: flex; align-items: center; gap: 10px; margin-bottom: 20px;
+}
+.name-input {
+  flex: 1; background: var(--bg3); border: 1px solid var(--border);
+  color: var(--text); border-radius: var(--radius); padding: 9px 12px;
+  font-size: 14px; font-family: 'SF Mono', 'Fira Code', monospace; outline: none;
+  transition: border-color .2s;
+}
+.name-input:focus { border-color: var(--blue); }
+.name-refresh {
+  background: var(--bg3); border: 1px solid var(--border);
+  color: var(--text2); border-radius: var(--radius); padding: 9px 14px;
+  font-size: 18px; cursor: pointer; transition: all .15s;
+}
+.name-refresh:hover { border-color: var(--blue); color: var(--blue); }
+
+/* DIVIDER */
+.divider { height: 1px; background: var(--border2); margin: 20px 0; }
+
+/* SECTION CARD */
+.section-card {
+  background: var(--bg2); border: 1px solid var(--border);
+  border-radius: var(--radius-lg); padding: 18px 20px; margin-bottom: 16px;
+}
+.section-card-head {
+  display: flex; align-items: center; gap: 8px; margin-bottom: 14px;
+}
+.section-card-head h3 { font-size: 13px; font-weight: 600; color: var(--text); }
+.section-card-head .badge {
+  font-size: 10px; padding: 2px 7px; border-radius: 10px; font-weight: 600;
+}
+.badge-required { background: var(--red-dim); color: var(--red); }
+.badge-optional { background: var(--bg3); color: var(--text3); }
+.badge-auto { background: var(--green-dim); color: var(--green); }
+
+/* ACTIONS */
+.action-row {
+  display: flex; gap: 10px; align-items: center; padding: 0 0 16px;
+}
+.btn {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 9px 18px; border-radius: var(--radius); font-size: 13px; font-weight: 600;
+  cursor: pointer; transition: all .15s; border: 1px solid transparent;
+}
+.btn-primary { background: var(--blue); color: #fff; }
+.btn-primary:hover { background: #79b8ff; }
+.btn-secondary { background: var(--bg3); border-color: var(--border); color: var(--text); }
+.btn-secondary:hover { border-color: var(--blue); color: var(--blue); }
+.btn-success { background: var(--green); color: #fff; }
+.btn-success:hover { background: #56d364; }
+.btn-danger { background: var(--red-dim); border-color: var(--red); color: var(--red); }
+.btn-ghost { background: none; color: var(--text2); border-color: var(--border); }
+.btn-ghost:hover { color: var(--text); border-color: var(--text2); }
+.btn-sm { padding: 6px 12px; font-size: 12px; }
+.btn:disabled { opacity: .45; cursor: not-allowed; pointer-events: none; }
+
+/* EXPORT BUTTONS */
+.export-btns { display: flex; flex-direction: column; gap: 6px; }
+
+/* ─── CODE PREVIEW PANEL ─────────────────────────────────────────────────── */
+.preview-panel {
+  width: 420px; flex-shrink: 0; border-left: 1px solid var(--border);
+  background: var(--bg2); display: flex; flex-direction: column; overflow: hidden;
+}
+.preview-head {
+  padding: 12px 16px 0; border-bottom: 1px solid var(--border2); flex-shrink: 0;
+}
+.preview-head h3 { font-size: 13px; font-weight: 600; color: var(--text); margin-bottom: 10px; }
+.tab-row { display: flex; gap: 0; }
+.tab-btn {
+  background: none; border: none; border-bottom: 2px solid transparent;
+  color: var(--text2); padding: 6px 16px; font-size: 13px; cursor: pointer;
+  transition: all .15s; margin-bottom: -1px;
+}
+.tab-btn:hover { color: var(--text); }
+.tab-btn.active { color: var(--blue); border-bottom-color: var(--blue); }
+.preview-body { flex: 1; overflow-y: auto; padding: 0; }
+.code-block {
+  background: var(--bg); border-top: 1px solid var(--border2);
+  font-family: 'SF Mono','Fira Code','Cascadia Code',monospace;
+  font-size: 12px; color: #e6edf3; padding: 16px; margin: 0;
+  white-space: pre; overflow-x: auto; min-height: 100%; line-height: 1.6;
+}
+.code-empty {
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  height: 100%; padding: 40px; text-align: center; color: var(--text3);
+}
+.code-empty-icon { font-size: 36px; margin-bottom: 12px; }
+.preview-actions { padding: 12px 16px; border-top: 1px solid var(--border2); flex-shrink: 0; display: flex; gap: 8px; }
+
+/* SYNTAX HIGHLIGHT */
+.kw  { color: #ff7b72; }
+.fn  { color: #d2a8ff; }
+.str { color: #a5d6ff; }
+.cm  { color: #6e7681; font-style: italic; }
+.num { color: #79c0ff; }
+.op  { color: #ffa657; }
+
+/* TOAST */
+.toast-container { position: fixed; bottom: 20px; right: 20px; z-index: 999; display: flex; flex-direction: column; gap: 8px; }
+.toast {
+  background: var(--bg3); border: 1px solid var(--border);
+  border-radius: var(--radius); padding: 12px 16px;
+  display: flex; align-items: center; gap: 10px; min-width: 260px;
+  box-shadow: var(--shadow); animation: slideIn .2s ease;
+}
+.toast-success { border-color: var(--green); }
+.toast-error   { border-color: var(--red); }
+@keyframes slideIn { from { transform: translateX(60px); opacity:0; } to { transform: none; opacity:1; } }
+@keyframes slideOut { to { transform: translateX(60px); opacity:0; } }
+
+/* LOADING */
+.spinner {
+  width: 16px; height: 16px; border: 2px solid var(--border);
+  border-top-color: var(--blue); border-radius: 50%;
+  animation: spin .6s linear infinite; flex-shrink: 0;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* PLACEHOLDER */
+.field-placeholder {
+  padding: 8px 12px; border-radius: var(--radius); background: var(--bg3);
+  border: 1px dashed var(--border); color: var(--text3); font-size: 12px;
+  font-style: italic;
+}
+
+/* HIDDEN */
+.hidden { display: none !important; }
+
+/* SCOPE SECTION — conditional rows */
+.scope-row { display: flex; flex-direction: column; gap: 12px; }
+.scope-field { display: flex; flex-direction: column; gap: 6px; }
+.scope-field-label { font-size: 11px; color: var(--text2); font-weight: 500; }
+
+/* BREADCRUMB */
+.breadcrumb {
+  display: flex; align-items: center; gap: 6px; flex-wrap: wrap;
+  margin-bottom: 20px; font-size: 12px; color: var(--text3);
+}
+.breadcrumb .crumb { color: var(--blue); }
+.breadcrumb .sep { color: var(--border); }
+
+/* VALIDATION DOT */
+.valid-dot {
+  width: 6px; height: 6px; border-radius: 50%;
+  background: var(--text3); display: inline-block; margin-left: 6px;
+}
+.valid-dot.ok { background: var(--green); }
+
+/* WINDOW CUSTOM INPUT */
+.window-custom { display: flex; align-items: center; gap: 6px; }
+.window-custom input { width: 80px; }
+
+/* RESPONSIVE */
+@media (max-width: 1200px) { .preview-panel { width: 360px; } }
+@media (max-width: 1024px) { .preview-panel { display: none; } }
+</style>
+</head>
+<body>
+<div class="app">
+
+<!-- ─── TOPBAR ─────────────────────────────────────────────────────────────── -->
+<div class="topbar">
+  <div class="topbar-logo">⚡ Credit<span>IQ</span></div>
+  <div class="topbar-sep"></div>
+  <nav class="topbar-nav">
+    <a href="/">Dashboard</a>
+    <a href="/builder" class="active">Feature Builder</a>
+    <a href="/docs" target="_blank">API Docs</a>
+  </nav>
+  <div class="topbar-right">
+    <div class="build-selector">
+      <label>Build:</label>
+      <select id="buildSelect" style="min-width:160px">
+        <option value="">-- select build --</option>
+      </select>
+      <span style="color:var(--text3);font-size:12px">or</span>
+      <input id="newBuildName" placeholder="New build name" style="width:140px">
+      <button class="btn btn-secondary btn-sm" onclick="createBuild()">Create</button>
+    </div>
+    <div class="topbar-sep"></div>
+    <div style="font-size:12px;color:var(--text3)">
+      Owner: <input id="ownerInput" value="guest" style="background:var(--bg3);border:1px solid var(--border);color:var(--text);border-radius:4px;padding:3px 8px;font-size:12px;width:90px;outline:none">
+    </div>
+  </div>
+</div>
+
+<!-- ─── MAIN ──────────────────────────────────────────────────────────────── -->
+<div class="main">
+
+<!-- LEFT SIDEBAR: variable list -->
+<aside class="sidebar">
+  <div class="sidebar-head">
+    Variables <span class="count" id="varCount">0</span>
+  </div>
+  <div class="var-list" id="varList">
+    <div class="sidebar-empty">
+      <div class="sidebar-empty-icon">📭</div>
+      Select a build to see variables
+    </div>
+  </div>
+  <div class="sidebar-foot">
+    <div class="export-btns">
+      <button class="btn btn-secondary btn-sm" onclick="exportCode('python')">⬇ Export Python</button>
+      <button class="btn btn-secondary btn-sm" onclick="exportCode('pyspark')">⬇ Export PySpark</button>
+    </div>
+  </div>
+</aside>
+
+<!-- CENTER: builder form -->
+<main class="builder">
+<div class="builder-inner">
+
+  <!-- Breadcrumb trail -->
+  <div class="breadcrumb" id="breadcrumb" style="display:none">
+    <span id="bc0"></span><span class="sep hidden" id="sep0">›</span>
+    <span class="crumb hidden" id="bc1"></span>
+    <span class="sep hidden" id="sep1">›</span>
+    <span class="crumb hidden" id="bc2"></span>
+    <span class="sep hidden" id="sep2">›</span>
+    <span class="crumb hidden" id="bc3"></span>
+  </div>
+
+  <!-- STEP 1: TYPE -->
+  <div class="section-card" id="step-type">
+    <div class="section-card-head">
+      <span class="step-badge">1</span>
+      <h3>Variable Type</h3>
+      <span class="badge badge-required">Required</span>
+    </div>
+    <div class="type-grid" id="typeGrid">
+      <div style="grid-column:1/-1;text-align:center;padding:20px;color:var(--text3)">
+        <div class="spinner" style="margin:0 auto 10px"></div>Loading types...
+      </div>
+    </div>
+  </div>
+
+  <!-- STEP 2: SUB-CATEGORY -->
+  <div class="section-card" id="step-subcat">
+    <div class="section-card-head">
+      <span class="step-badge">2</span>
+      <h3>Sub-Category</h3>
+      <span class="badge badge-required">Required</span>
+    </div>
+    <div class="form-group">
+      <select class="form-select" id="subcatSelect" disabled>
+        <option value="">— select type first —</option>
+      </select>
+      <div style="font-size:11px;color:var(--text3);margin-top:4px" id="subcatDesc"></div>
+    </div>
+  </div>
+
+  <!-- STEP 3: MEASURE -->
+  <div class="section-card" id="step-measure">
+    <div class="section-card-head">
+      <span class="step-badge">3</span>
+      <h3>Measure / Value</h3>
+      <span class="badge badge-required">Required</span>
+    </div>
+    <div class="form-group">
+      <select class="form-select" id="measureSelect" disabled>
+        <option value="">— select sub-category first —</option>
+      </select>
+    </div>
+  </div>
+
+  <!-- STEP 4: AGGREGATION -->
+  <div class="section-card" id="step-agg">
+    <div class="section-card-head">
+      <span class="step-badge">4</span>
+      <h3>Aggregation</h3>
+      <span class="badge badge-required">Required</span>
+    </div>
+    <div class="pill-group" id="aggGroup">
+      <div class="field-placeholder">Select sub-category first</div>
+    </div>
+  </div>
+
+  <!-- STEP 5: SCOPE -->
+  <div class="section-card" id="step-scope">
+    <div class="section-card-head">
+      <span class="step-badge">5</span>
+      <h3>Scope</h3>
+      <span class="badge badge-optional">Optional</span>
+    </div>
+    <div class="scope-row" id="scopeRow">
+      <div class="field-placeholder">Select type &amp; sub-category to configure scope</div>
+    </div>
+  </div>
+
+  <!-- STEP 6: TIME WINDOW -->
+  <div class="section-card" id="step-window">
+    <div class="section-card-head">
+      <span class="step-badge">6</span>
+      <h3>Time Window</h3>
+      <span class="badge badge-required">Required</span>
+    </div>
+    <div class="pill-group" id="windowGroup">
+      <!-- populated from API -->
+    </div>
+    <div class="window-custom hidden" id="windowCustom" style="margin-top:10px">
+      <span class="form-label">Custom (months):</span>
+      <input class="form-input" type="number" id="windowCustomVal" placeholder="e.g. 18" min="1" max="120" style="width:100px">
+    </div>
+  </div>
+
+  <!-- STEP 7: THRESHOLD -->
+  <div class="threshold-box hidden" id="step-threshold">
+    <div class="threshold-label" id="thresholdLabel">⚡ Threshold Condition</div>
+    <div class="threshold-row">
+      <select class="threshold-op" id="thresholdOp">
+        <option value=">=">≥</option>
+        <option value=">">></option>
+        <option value="=">=</option>
+        <option value="<"><</option>
+        <option value="<=">≤</option>
+      </select>
+      <input class="threshold-val" type="number" id="thresholdVal" placeholder="value">
+      <span class="threshold-hint" id="thresholdHint"></span>
+    </div>
+  </div>
+
+  <!-- FEATURE NAME -->
+  <div class="section-card" id="step-name">
+    <div class="section-card-head">
+      <span class="step-badge">8</span>
+      <h3>Feature Name</h3>
+      <span class="badge badge-auto">Auto-generated · multi-combo prefix</span>
+    </div>
+    <div class="name-box">
+      <input type="text" class="name-input" id="featureName" placeholder="e.g. enq_amt_pl_avg_12m">
+      <button class="name-refresh" onclick="autoName()" title="Regenerate name">↺</button>
+    </div>
+    <div style="margin-top:8px;font-size:11px;color:var(--text3)" id="comboHint">
+      Select aggregations + windows above to see variable count
+    </div>
+  </div>
+
+  <!-- ACTIONS -->
+  <div class="action-row">
+    <button class="btn btn-primary" onclick="saveVariable()" id="saveBtn">
+      ✦ Save Variable
+    </button>
+    <button class="btn btn-secondary" onclick="previewCode()" id="previewBtn">
+      ⌥ Preview Code
+    </button>
+    <button class="btn btn-ghost" onclick="resetForm()">
+      ↺ Reset
+    </button>
+  </div>
+
+  <!-- FAMILY SWEEP MODAL -->
+  
+
+</div><!-- /.builder-inner -->
+</main>
+
+<!-- RIGHT PANEL: code preview -->
+<aside class="preview-panel">
+  <div class="preview-head">
+    <h3>Code Preview</h3>
+    <div class="tab-row">
+      <button class="tab-btn active" onclick="switchTab('python')" id="tabPython">Python</button>
+      <button class="tab-btn" onclick="switchTab('pyspark')" id="tabPyspark">PySpark</button>
+    </div>
+  </div>
+  <div class="preview-body">
+    <div class="code-empty" id="codeEmpty">
+      <div class="code-empty-icon">💻</div>
+      <div>Configure a feature and click<br><strong>Preview Code</strong> to see generated code</div>
+    </div>
+    <pre class="code-block hidden" id="codePython"></pre>
+    <pre class="code-block hidden" id="codePyspark"></pre>
+  </div>
+  <div class="preview-actions">
+    <button class="btn btn-ghost btn-sm" onclick="copyCode()" id="copyBtn">⎘ Copy</button>
+    <button class="btn btn-ghost btn-sm" onclick="downloadCode()">⬇ Download</button>
+  </div>
+</aside>
+
+</div><!-- /.main -->
+</div><!-- /.app -->
+
+<!-- Toast container -->
+<div class="toast-container" id="toastContainer"></div>
+
+<script>
+/* ═══════════════════════════════════════════════════════════════════════════
+   STATE
+══════════════════════════════════════════════════════════════════════════ */
+const API = '';   // Empty = same origin. Change to e.g. 'http://localhost:8000' if needed
+
+const state = {
+  builds:        [],
+  activeBuildId: null,
+  variables:     [],
+  metadata:      null,
+
+  // Builder selections
+  sel: {
+    variable_type:  null,
+    sub_category:   null,
+    measure:        null,
+    aggregation:    null,
+    time_window:    '12m',
+    loan_types:     [],
+    secured:        'all',
+    account_status: [],
+    ownership:      'all',
+    dpd_op:         '>=',
+    dpd_val:        null,
+    amount_op:      '>=',
+    amount_val:     null,
+    name:           '',
+  },
+
+  // Cascade options (returned from API)
+  cascade: {
+    sub_categories: [],
+    measures:       [],
+    aggregations:   [],
+    scope_fields:   [],
+    threshold:      null,
+  },
+
+  activeTab:    'python',
+  lastPreview:  null,
+};
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   INIT
+══════════════════════════════════════════════════════════════════════════ */
+document.addEventListener('DOMContentLoaded', async () => {
+  await loadMetadata();
+  await loadBuilds();
+  renderTimeWindows();
+});
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   API HELPERS
+══════════════════════════════════════════════════════════════════════════ */
+async function apiFetch(path, opts = {}) {
+  try {
+    const r = await fetch(API + path, {
+      headers: { 'Content-Type': 'application/json', ...opts.headers },
+      ...opts,
+    });
+    if (!r.ok) {
+      const err = await r.json().catch(() => ({ detail: r.statusText }));
+      throw new Error(err.detail || r.statusText);
+    }
+    return r.json();
+  } catch (e) {
+    throw e;
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   METADATA
+══════════════════════════════════════════════════════════════════════════ */
+async function loadMetadata() {
+  try {
+    state.metadata = await apiFetch('/builder/metadata');
+    renderTypes(state.metadata.types);
+    renderTimeWindows(state.metadata.time_windows);
+  } catch (e) {
+    toast('Failed to load metadata: ' + e.message, 'error');
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   BUILDS
+══════════════════════════════════════════════════════════════════════════ */
+async function loadBuilds() {
+  const owner = document.getElementById('ownerInput').value.trim() || 'guest';
+  try {
+    const data = await apiFetch(`/builder/builds?owner=${encodeURIComponent(owner)}`);
+    state.builds = data.builds || [];
+    const sel = document.getElementById('buildSelect');
+    sel.innerHTML = '<option value="">-- select build --</option>';
+    state.builds.forEach(b => {
+      const o = document.createElement('option');
+      o.value = b.id;
+      o.textContent = `${b.name} (${b.variable_count} vars)`;
+      sel.appendChild(o);
+    });
+    if (state.activeBuildId) {
+      sel.value = state.activeBuildId;
+      loadVariables();
+    }
+  } catch (e) {
+    // silent — no builds yet
+  }
+}
+
+document.getElementById('buildSelect').addEventListener('change', function() {
+  state.activeBuildId = this.value ? parseInt(this.value) : null;
+  if (state.activeBuildId) loadVariables();
+  else { state.variables = []; renderVariableList(); }
+});
+
+async function createBuild() {
+  const name  = document.getElementById('newBuildName').value.trim();
+  const owner = document.getElementById('ownerInput').value.trim() || 'guest';
+  if (!name) { toast('Enter a build name', 'error'); return; }
+  try {
+    const data = await apiFetch('/builder/build', {
+      method: 'POST',
+      body: JSON.stringify({ name, owner }),
+    });
+    toast(`Build "${name}" created`, 'success');
+    document.getElementById('newBuildName').value = '';
+    await loadBuilds();
+    state.activeBuildId = data.build.id;
+    document.getElementById('buildSelect').value = data.build.id;
+    loadVariables();
+  } catch (e) {
+    toast('Error: ' + e.message, 'error');
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   VARIABLES
+══════════════════════════════════════════════════════════════════════════ */
+async function loadVariables() {
+  if (!state.activeBuildId) return;
+  try {
+    const data = await apiFetch(`/builder/variables?build_id=${state.activeBuildId}`);
+    state.variables = data.variables || [];
+    document.getElementById('varCount').textContent = state.variables.length;
+    renderVariableList();
+  } catch (e) {
+    toast('Failed to load variables', 'error');
+  }
+}
+
+function renderVariableList() {
+  const list = document.getElementById('varList');
+  if (!state.variables.length) {
+    list.innerHTML = '<div class="sidebar-empty"><div class="sidebar-empty-icon">📭</div>No variables yet. Build your first one!</div>';
+    return;
+  }
+  const typeIcon = { Enquiry: '🔍', Trade: '📊', Account: '🏦', 'Trade History': '📈', Other: '⚙️' };
+  list.innerHTML = state.variables.map(v => `
+    <div class="var-item" onclick="loadVariableIntoForm(${v.id})">
+      <div class="var-item-icon">${typeIcon[v.variable_type] || '⚙️'}</div>
+      <div class="var-item-body">
+        <div class="var-item-name" title="${v.name}">${v.name}</div>
+        <div class="var-item-meta">${v.variable_type} · ${v.aggregation || ''} · ${v.time_window || ''}</div>
+      </div>
+      <button class="var-item-del" onclick="event.stopPropagation();deleteVariable(${v.id})" title="Delete">✕</button>
+    </div>
+  `).join('');
+}
+
+async function deleteVariable(id) {
+  if (!confirm('Delete this variable?')) return;
+  try {
+    await apiFetch(`/builder/variable/${id}`, { method: 'DELETE' });
+    toast('Variable deleted', 'success');
+    await loadVariables();
+  } catch (e) {
+    toast('Delete failed: ' + e.message, 'error');
+  }
+}
+
+function loadVariableIntoForm(id) {
+  const v = state.variables.find(x => x.id === id);
+  if (!v) return;
+  const c = v.config || {};
+  // Restore type
+  setType(v.variable_type, true);
+  // Sub-cat / measure / agg will cascade — use a timeout to let cascade settle
+  setTimeout(async () => {
+    document.getElementById('subcatSelect').value = v.sub_category || '';
+    await onSubcatChange(v.sub_category);
+    document.getElementById('measureSelect').value = v.measure || '';
+    setAgg(v.aggregation);
+    setWindow(v.time_window || '12m');
+
+    // Restore scope
+    const lt = (c.filters?.product) || (c.trade_scope?.loanType) || (c.acc_scope?.loanType) || [];
+    state.sel.loan_types = lt;
+    renderScopeChips();
+
+    const sec = c.filters?.secured || c.trade_scope?.secured || c.acc_scope?.secured || 'all';
+    state.sel.secured = sec;
+    renderSecuredToggle();
+
+    const statuses = c.trade_scope?.statusList || c.acc_scope?.statusList || [];
+    state.sel.account_status = statuses;
+    renderStatusChips();
+
+    // Threshold
+    if (c.dpd_threshold) {
+      document.getElementById('thresholdVal').value = c.dpd_threshold;
+      document.getElementById('thresholdOp').value = (c.conditions?.dpd_op) || '>=';
+    }
+    if (c.amount_val) {
+      document.getElementById('thresholdVal').value = c.amount_val;
+      document.getElementById('thresholdOp').value = c.amount_op || '>=';
+    }
+
+    document.getElementById('featureName').value = v.name;
+    state.sel.name = v.name;
+  }, 100);
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   RENDER TYPES
+══════════════════════════════════════════════════════════════════════════ */
+function renderTypes(types) {
+  const grid = document.getElementById('typeGrid');
+  grid.innerHTML = types.map(t => `
+    <div class="type-card" id="tc_${t.value.replace(/\s/g,'_')}"
+         onclick="setType('${t.value}')">
+      <span class="icon">${t.icon}</span>
+      <div class="label">${t.label}</div>
+      <div class="desc">${t.description}</div>
+    </div>
+  `).join('');
+}
+
+function setType(typeValue, silent = false) {
+  // Deselect all
+  document.querySelectorAll('.type-card').forEach(c => c.classList.remove('selected'));
+  const card = document.getElementById(`tc_${typeValue.replace(/\s/g,'_')}`);
+  if (card) card.classList.add('selected');
+
+  if (state.sel.variable_type !== typeValue) {
+    state.sel = { ...state.sel, variable_type: typeValue, sub_category: null, measure: null, aggregation: null, loan_types: [], account_status: [] };
+    if (!silent) {
+      resetSubCatDownstream();
+      loadSubCategories(typeValue);
+    } else {
+      loadSubCategories(typeValue);
+    }
+  }
+  updateBreadcrumb();
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   CASCADE: Sub-Category
+══════════════════════════════════════════════════════════════════════════ */
+async function loadSubCategories(typeValue) {
+  const sel = document.getElementById('subcatSelect');
+  sel.innerHTML = '<option value="">Loading...</option>';
+  sel.disabled = true;
+  try {
+    const data = await apiFetch(`/builder/cascade?type=${encodeURIComponent(typeValue)}`);
+    state.cascade.sub_categories = data.sub_categories || [];
+    sel.innerHTML = '<option value="">— select sub-category —</option>';
+    data.sub_categories.forEach(sc => {
+      const o = document.createElement('option');
+      o.value = sc.value;
+      o.textContent = sc.label;
+      o.title = sc.description;
+      sel.appendChild(o);
+    });
+    sel.disabled = false;
+  } catch (e) {
+    sel.innerHTML = '<option value="">Error loading</option>';
+    toast('Cascade error: ' + e.message, 'error');
+  }
+}
+
+document.getElementById('subcatSelect').addEventListener('change', function() {
+  onSubcatChange(this.value);
+});
+
+async function onSubcatChange(subcatValue) {
+  state.sel.sub_category = subcatValue || null;
+  state.sel.measure = null;
+  state.sel.aggregation = null;
+  state.sel.aggregations = [];   // multi-select aggregations
+  state.sel.time_windows = [];   // multi-select windows
+
+  // Show desc
+  const sc = state.cascade.sub_categories.find(s => s.value === subcatValue);
+  document.getElementById('subcatDesc').textContent = sc?.description || '';
+
+  if (!subcatValue || !state.sel.variable_type) {
+    resetMeasureDownstream();
+    return;
+  }
+
+  // CASCADE: fetch measures, aggs, scope, threshold
+  try {
+    const data = await apiFetch(
+      `/builder/cascade?type=${encodeURIComponent(state.sel.variable_type)}&sub_category=${encodeURIComponent(subcatValue)}`
+    );
+    state.cascade = { ...state.cascade, ...data };
+    renderMeasures(data.measures || []);
+    renderAggregations(data.aggregations || []);
+    renderScope(data.scope_fields || []);
+    renderThreshold(data.threshold);
+    autoName();
+  } catch (e) {
+    toast('Cascade error: ' + e.message, 'error');
+  }
+  updateBreadcrumb();
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   CASCADE: Measure
+══════════════════════════════════════════════════════════════════════════ */
+function renderMeasures(measures) {
+  const sel = document.getElementById('measureSelect');
+  sel.innerHTML = '<option value="">— select measure —</option>';
+  measures.forEach(m => {
+    const o = document.createElement('option');
+    o.value = m.value;
+    o.textContent = m.label;
+    sel.appendChild(o);
+  });
+  sel.disabled = measures.length === 0;
+  if (measures.length === 1) { sel.value = measures[0].value; state.sel.measure = measures[0].value; }
+}
+
+document.getElementById('measureSelect').addEventListener('change', function() {
+  state.sel.measure = this.value || null;
+  updateBreadcrumb();
+  autoName();
+});
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   CASCADE: Aggregation
+══════════════════════════════════════════════════════════════════════════ */
+function renderAggregations(aggregations) {
+  const group = document.getElementById('aggGroup');
+  if (!aggregations.length) {
+    group.innerHTML = '<div class="field-placeholder">Select sub-category first</div>';
+    return;
+  }
+  // MULTI-SELECT: each pill toggles independently
+  group.innerHTML = `
+    <div style="font-size:11px;color:var(--text3);margin-bottom:6px;">
+      Select one or more aggregations — each combination generates a separate variable
+      <button onclick="selectAllAggs()" style="margin-left:8px;padding:2px 8px;font-size:10px;background:var(--bg3);border:1px solid var(--border);border-radius:4px;color:var(--blue);cursor:pointer;">All</button>
+      <button onclick="clearAllAggs()" style="margin-left:4px;padding:2px 8px;font-size:10px;background:var(--bg3);border:1px solid var(--border);border-radius:4px;color:var(--text2);cursor:pointer;">Clear</button>
+    </div>` +
+  aggregations.map(a => `
+    <button class="pill" data-agg="${a.value}" onclick="toggleAgg('${a.value}')">${a.label}</button>
+  `).join('');
+  // Auto-select first agg
+  state.sel.aggregations = [];
+  if (aggregations.length) toggleAgg(aggregations[0].value);
+  updateSaveCounter();
+}
+
+function toggleAgg(val) {
+  if (!state.sel.aggregations) state.sel.aggregations = [];
+  const idx = state.sel.aggregations.indexOf(val);
+  if (idx === -1) state.sel.aggregations.push(val);
+  else state.sel.aggregations.splice(idx, 1);
+  // Keep legacy single-agg state in sync (use first selected)
+  state.sel.aggregation = state.sel.aggregations[0] || null;
+  document.querySelectorAll('#aggGroup .pill').forEach(p => {
+    p.classList.toggle('selected', state.sel.aggregations.includes(p.dataset.agg));
+  });
+  updateSaveCounter();
+  autoName();
+}
+
+function setAgg(val) { toggleAgg(val); }  // backward compat
+
+function selectAllAggs() {
+  document.querySelectorAll('#aggGroup .pill[data-agg]').forEach(p => {
+    if (!state.sel.aggregations.includes(p.dataset.agg)) {
+      state.sel.aggregations.push(p.dataset.agg);
+      p.classList.add('selected');
+    }
+  });
+  state.sel.aggregation = state.sel.aggregations[0] || null;
+  updateSaveCounter(); autoName();
+}
+
+function clearAllAggs() {
+  state.sel.aggregations = [];
+  state.sel.aggregation = null;
+  document.querySelectorAll('#aggGroup .pill').forEach(p => p.classList.remove('selected'));
+  updateSaveCounter(); autoName();
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   CASCADE: Scope
+══════════════════════════════════════════════════════════════════════════ */
+function renderScope(scopeFields) {
+  state.cascade.scope_fields = scopeFields;
+  const row = document.getElementById('scopeRow');
+  if (!scopeFields.length) {
+    row.innerHTML = '<div class="field-placeholder">No scope filters for this selection</div>';
+    return;
+  }
+  let html = '';
+  if (scopeFields.includes('loan_types')) {
+    html += `
+      <div class="scope-field">
+        <div class="scope-field-label">Loan Types <span style="color:var(--text3)">(none = all)</span></div>
+        <div class="chip-group" id="loanTypeChips">
+          ${(state.metadata?.loan_types || []).map(lt => `
+            <div class="chip" data-lt="${lt.value}" onclick="toggleLoanType('${lt.value}')"
+                 title="${lt.label}">${lt.value}</div>
+          `).join('')}
+        </div>
+      </div>`;
+  }
+  if (scopeFields.includes('secured')) {
+    html += `
+      <div class="scope-field">
+        <div class="scope-field-label">Secured / Unsecured</div>
+        <div class="toggle-group" id="securedToggle">
+          ${(state.metadata?.secured_options || []).map(s => `
+            <button class="toggle-btn ${state.sel.secured === s.value ? 'selected':''}"
+                    data-sec="${s.value}" onclick="setSecured('${s.value}')">${s.label}</button>
+          `).join('')}
+        </div>
+      </div>`;
+  }
+  if (scopeFields.includes('account_status')) {
+    html += `
+      <div class="scope-field">
+        <div class="scope-field-label">Account Status <span style="color:var(--text3)">(none = all)</span></div>
+        <div class="chip-group" id="statusChips">
+          ${(state.metadata?.account_statuses || []).map(s => `
+            <div class="chip" data-st="${s.value}" onclick="toggleStatus('${s.value}')">${s.label}</div>
+          `).join('')}
+        </div>
+      </div>`;
+  }
+  if (scopeFields.includes('ownership')) {
+    html += `
+      <div class="scope-field">
+        <div class="scope-field-label">Ownership</div>
+        <div class="toggle-group" id="ownershipToggle">
+          ${(state.metadata?.ownership_options || []).map(o => `
+            <button class="toggle-btn ${state.sel.ownership === o.value ? 'selected':''}",
+                    data-own="${o.value}" onclick="setOwnership('${o.value}')">${o.label}</button>
+          `).join('')}
+        </div>
+      </div>`;
+  }
+  row.innerHTML = html;
+  // Re-apply current selections
+  renderScopeChips();
+  renderSecuredToggle();
+  renderStatusChips();
+}
+
+function toggleLoanType(val) {
+  const idx = state.sel.loan_types.indexOf(val);
+  if (idx === -1) state.sel.loan_types.push(val);
+  else state.sel.loan_types.splice(idx, 1);
+  renderScopeChips();
+  updateSaveCounter();
+}
+function renderScopeChips() {
+  document.querySelectorAll('#loanTypeChips .chip').forEach(c => {
+    c.classList.toggle('selected', state.sel.loan_types.includes(c.dataset.lt));
+  });
+}
+
+function setSecured(val) {
+  state.sel.secured = val;
+  renderSecuredToggle();
+}
+function renderSecuredToggle() {
+  document.querySelectorAll('#securedToggle .toggle-btn').forEach(b => {
+    b.classList.toggle('selected', b.dataset.sec === state.sel.secured);
+  });
+}
+
+function toggleStatus(val) {
+  const idx = state.sel.account_status.indexOf(val);
+  if (idx === -1) state.sel.account_status.push(val);
+  else state.sel.account_status.splice(idx, 1);
+  renderStatusChips();
+}
+function renderStatusChips() {
+  document.querySelectorAll('#statusChips .chip').forEach(c => {
+    c.classList.toggle('selected', state.sel.account_status.includes(c.dataset.st));
+  });
+}
+
+function setOwnership(val) {
+  state.sel.ownership = val;
+  document.querySelectorAll('#ownershipToggle .toggle-btn').forEach(b => {
+    b.classList.toggle('selected', b.dataset.own === val);
+  });
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   CASCADE: Threshold
+══════════════════════════════════════════════════════════════════════════ */
+function renderThreshold(thresholdCfg) {
+  state.cascade.threshold = thresholdCfg;
+  const box = document.getElementById('step-threshold');
+  if (!thresholdCfg || !thresholdCfg.enabled) {
+    box.classList.add('hidden');
+    return;
+  }
+  box.classList.remove('hidden');
+  document.getElementById('thresholdLabel').textContent = `⚡ ${thresholdCfg.label}`;
+  document.getElementById('thresholdHint').textContent = `(${thresholdCfg.placeholder || ''})`;
+
+  // Populate operators
+  const opSel = document.getElementById('thresholdOp');
+  opSel.innerHTML = (thresholdCfg.operators || ['>=']).map(op => {
+    const labels = { '>=':'≥', '>':'>', '=':'=', '<':'<', '<=':'≤' };
+    return `<option value="${op}">${labels[op] || op}</option>`;
+  }).join('');
+
+  document.getElementById('thresholdVal').placeholder = thresholdCfg.placeholder || 'value';
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   TIME WINDOW
+══════════════════════════════════════════════════════════════════════════ */
+function renderTimeWindows(windows) {
+  const tws = windows || (state.metadata?.time_windows) || [
+    {value:'1m',label:'1 Month'},{value:'3m',label:'3 Months'},
+    {value:'6m',label:'6 Months'},{value:'12m',label:'12 Months'},
+    {value:'24m',label:'24 Months'},{value:'36m',label:'36 Months'},
+  ];
+  const group = document.getElementById('windowGroup');
+  // Filter out 'custom' for multi-select mode
+  const filteredTws = tws.filter(w => w.value !== 'custom');
+  group.innerHTML = `
+    <div style="font-size:11px;color:var(--text3);margin-bottom:6px;">
+      Select one or more windows — each generates separate variables
+      <button onclick="selectAllWindows()" style="margin-left:8px;padding:2px 8px;font-size:10px;background:var(--bg3);border:1px solid var(--border);border-radius:4px;color:var(--blue);cursor:pointer;">All</button>
+      <button onclick="clearAllWindows()" style="margin-left:4px;padding:2px 8px;font-size:10px;background:var(--bg3);border:1px solid var(--border);border-radius:4px;color:var(--text2);cursor:pointer;">Clear</button>
+    </div>` +
+  filteredTws.map(w => `
+    <button class="pill" data-w="${w.value}" onclick="toggleWindow('${w.value}')">${w.label}</button>
+  `).join('');
+  // Default select 12m
+  state.sel.time_windows = [];
+  toggleWindow('12m');
+}
+
+function toggleWindow(val) {
+  if (!state.sel.time_windows) state.sel.time_windows = [];
+  const idx = state.sel.time_windows.indexOf(val);
+  if (idx === -1) state.sel.time_windows.push(val);
+  else state.sel.time_windows.splice(idx, 1);
+  // Keep legacy single-window in sync
+  state.sel.time_window = state.sel.time_windows[0] || '12m';
+  document.querySelectorAll('#windowGroup .pill').forEach(p => {
+    p.classList.toggle('selected', state.sel.time_windows.includes(p.dataset.w));
+  });
+  document.getElementById('windowCustom').classList.add('hidden');
+  updateSaveCounter();
+  autoName();
+}
+
+function setWindow(val) { toggleWindow(val); }  // backward compat
+
+function selectAllWindows() {
+  state.sel.time_windows = [];
+  document.querySelectorAll('#windowGroup .pill[data-w]').forEach(p => {
+    state.sel.time_windows.push(p.dataset.w);
+    p.classList.add('selected');
+  });
+  state.sel.time_window = state.sel.time_windows[0] || '12m';
+  updateSaveCounter(); autoName();
+}
+
+function clearAllWindows() {
+  state.sel.time_windows = [];
+  state.sel.time_window = null;
+  document.querySelectorAll('#windowGroup .pill').forEach(p => p.classList.remove('selected'));
+  updateSaveCounter(); autoName();
+}
+
+document.getElementById('windowCustomVal').addEventListener('input', function() {
+  if (state.sel.time_window === 'custom') autoName();
+});
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   AUTO-NAME
+══════════════════════════════════════════════════════════════════════════ */
+async function autoName() {
+  if (!state.sel.variable_type || !state.sel.sub_category) return;
+  const p = new URLSearchParams({
+    variable_type: state.sel.variable_type,
+    sub_category:  state.sel.sub_category,
+    aggregation:   state.sel.aggregation || 'count',
+    time_window:   getEffectiveWindow(),
+    measure:       state.sel.measure || '',
+    ...(document.getElementById('thresholdVal').value && {
+      dpd_op:  document.getElementById('thresholdOp').value,
+      dpd_val: document.getElementById('thresholdVal').value,
+    }),
+  });
+  try {
+    const data = await apiFetch(`/builder/auto-name?${p}`);
+    document.getElementById('featureName').value = data.name;
+    state.sel.name = data.name;
+  } catch (_) {}
+}
+
+function getEffectiveWindow() {
+  if (state.sel.time_window === 'custom') {
+    const v = document.getElementById('windowCustomVal').value;
+    return v ? v + 'm' : '12m';
+  }
+  return state.sel.time_window || '12m';
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   PREVIEW CODE
+══════════════════════════════════════════════════════════════════════════ */
+async function previewCode() {
+  const btn = document.getElementById('previewBtn');
+  btn.disabled = true;
+  btn.textContent = '⏳ Generating...';
+
+  const payload = buildPayload();
+  try {
+    const data = await apiFetch('/builder/code-preview', {
+      method: 'POST',
+      body: JSON.stringify(payload.variable),
+    });
+    state.lastPreview = data;
+    document.getElementById('codeEmpty').classList.add('hidden');
+    document.getElementById('codePython').textContent  = data.python  || '# No code generated';
+    document.getElementById('codePyspark').textContent = data.pyspark || '# No code generated';
+    applyCodeHighlight();
+    switchTab(state.activeTab);
+  } catch (e) {
+    toast('Preview failed: ' + e.message, 'error');
+  } finally {
+    btn.disabled = false;
+    btn.textContent = '⌥ Preview Code';
+  }
+}
+
+function applyCodeHighlight() {
+  ['codePython','codePyspark'].forEach(id => {
+    const el = document.getElementById(id);
+    let code = el.textContent;
+    // Simple keyword highlight
+    code = code
+      .replace(/\b(def|import|from|return|if|else|elif|for|in|not|and|or|class|pass|True|False|None|as|with|try|except|raise|lambda|yield)\b/g, '<span class="kw">$1</span>')
+      .replace(/(#[^\n]*)/g, '<span class="cm">$1</span>')
+      .replace(/\b(\d+\.?\d*)\b/g, '<span class="num">$1</span>')
+      .replace(/(f?'[^']*'|"[^"]*")/g, '<span class="str">$1</span>');
+    el.innerHTML = code;
+  });
+}
+
+function switchTab(tab) {
+  state.activeTab = tab;
+  document.getElementById('tabPython').classList.toggle('active',  tab === 'python');
+  document.getElementById('tabPyspark').classList.toggle('active', tab === 'pyspark');
+  document.getElementById('codePython').classList.toggle('hidden',  tab !== 'python');
+  document.getElementById('codePyspark').classList.toggle('hidden', tab !== 'pyspark');
+}
+
+function copyCode() {
+  const el = state.activeTab === 'python' ? 'codePython' : 'codePyspark';
+  const text = document.getElementById(el).textContent;
+  navigator.clipboard.writeText(text).then(() => toast('Copied!', 'success'));
+}
+
+function downloadCode() {
+  const tab = state.activeTab;
+  const el  = tab === 'python' ? 'codePython' : 'codePyspark';
+  const text = document.getElementById(el).textContent;
+  const ext  = tab === 'python' ? '.py' : '_spark.py';
+  const name = (state.sel.name || 'feature') + ext;
+  const blob = new Blob([text], { type: 'text/plain' });
+  const a    = document.createElement('a');
+  a.href     = URL.createObjectURL(blob);
+  a.download = name;
+  a.click();
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   SAVE VARIABLE
+══════════════════════════════════════════════════════════════════════════ */
+/* ─────────────────────────────────────────────────────────────────────────
+   SAVE COUNTER — shows how many variables will be created
+───────────────────────────────────────────────────────────────────────── */
+function updateSaveCounter() {
+  const combo = _countCombinations();
+  const btn = document.getElementById('saveBtn');
+  if (combo > 1) {
+    btn.textContent = `✦ Save ${combo} Variables`;
+    btn.title = `Will generate ${combo} variables (agg × window × product combinations)`;
+  } else {
+    btn.textContent = '✦ Save Variable';
+    btn.title = '';
+  }
+}
+
+function _countCombinations() {
+  const aggs    = (state.sel.aggregations || [state.sel.aggregation]).filter(Boolean);
+  const windows = (state.sel.time_windows || [state.sel.time_window]).filter(Boolean);
+  const prods   = state.sel.loan_types || [];
+  const prodCount = prods.length > 0 ? prods.length : 1;
+  return Math.max(aggs.length, 1) * Math.max(windows.length, 1) * prodCount;
+}
+
+/* ─────────────────────────────────────────────────────────────────────────
+   SAVE VARIABLE — cross-product: every agg × window × product combination
+───────────────────────────────────────────────────────────────────────── */
+async function saveVariable() {
+  if (!state.activeBuildId) { toast('Select or create a build first', 'error'); return; }
+  if (!state.sel.variable_type) { toast('Select a variable type', 'error'); return; }
+  if (!state.sel.sub_category)  { toast('Select a sub-category', 'error'); return; }
+
+  const aggs    = (state.sel.aggregations && state.sel.aggregations.length)
+                    ? state.sel.aggregations
+                    : (state.sel.aggregation ? [state.sel.aggregation] : []);
+  const windows = (state.sel.time_windows && state.sel.time_windows.length)
+                    ? state.sel.time_windows
+                    : (state.sel.time_window ? [state.sel.time_window] : ['12m']);
+  const prods   = (state.sel.loan_types && state.sel.loan_types.length)
+                    ? state.sel.loan_types
+                    : [null];  // null = no filter = all products
+
+  if (!aggs.length) { toast('Select at least one aggregation', 'error'); return; }
+  if (!windows.length) { toast('Select at least one time window', 'error'); return; }
+
+  // Build all combos
+  const combos = [];
+  for (const agg of aggs) {
+    for (const win of windows) {
+      for (const prod of prods) {
+        combos.push({ agg, win, prod });
+      }
+    }
+  }
+
+  const btn = document.getElementById('saveBtn');
+  btn.disabled = true;
+  btn.textContent = `⏳ Saving 0 / ${combos.length}...`;
+
+  const owner = document.getElementById('ownerInput').value.trim() || 'guest';
+  const build = state.builds.find(b => b.id === state.activeBuildId);
+  const thresholdVal = document.getElementById('thresholdVal').value;
+  const thresholdOp  = document.getElementById('thresholdOp').value;
+  const thType = state.cascade?.threshold?.type;
+
+  let saved = 0; let failed = 0;
+
+  for (let i = 0; i < combos.length; i++) {
+    const { agg, win, prod } = combos[i];
+    btn.textContent = `⏳ Saving ${i + 1} / ${combos.length}...`;
+
+    const loanTypes = prod ? [prod] : (state.sel.loan_types || []);
+    const varData = {
+      variable_type:  state.sel.variable_type,
+      sub_category:   state.sel.sub_category,
+      measure:        state.sel.measure || '',
+      aggregation:    agg,
+      time_window:    win,
+      loan_types:     loanTypes,
+      secured:        state.sel.secured || 'all',
+      account_status: state.sel.account_status || [],
+      ownership:      state.sel.ownership || 'all',
+      ...(thType === 'dpd' && thresholdVal
+        ? { dpd_op: thresholdOp, dpd_val: parseInt(thresholdVal) } : {}),
+      ...(thType === 'amount' && thresholdVal
+        ? { amount_op: thresholdOp, amount_val: parseFloat(thresholdVal) } : {}),
+    };
+    // Auto-generate name for this combo
+    const nameParts = [
+      state.sel.variable_type.toLowerCase().slice(0,3),
+      state.sel.sub_category,
+      state.sel.measure || '',
+      prod ? prod.toLowerCase() : '',
+      agg,
+      win,
+    ].filter(Boolean);
+    varData.name = nameParts.join('_').replace(/[^a-z0-9_]/g,'_').replace(/_+/g,'_');
+
+    try {
+      await apiFetch('/builder/variable', {
+        method: 'POST',
+        body: JSON.stringify({ build_name: build?.name || '', owner, variable: varData, auto_config: true }),
+      });
+      saved++;
+    } catch (e) { failed++; }
+  }
+
+  btn.disabled = false;
+  updateSaveCounter();
+  if (failed > 0) toast(`Saved ${saved} variables (${failed} failed)`, 'warn');
+  else toast(`✓ ${saved} variable${saved > 1 ? 's' : ''} saved to build!`, 'success');
+  await loadVariables();
+  await loadBuilds();
+  previewCode();
+}
+
+function buildPayload(buildName = '', owner = 'guest') {
+  const th = state.cascade.threshold;
+  const thType = th?.type;
+  const thVal = document.getElementById('thresholdVal').value;
+  const thOp  = document.getElementById('thresholdOp').value;
+
+  const varData = {
+    name:          document.getElementById('featureName').value.trim() || state.sel.name,
+    variable_type: state.sel.variable_type,
+    sub_category:  state.sel.sub_category,
+    measure:       state.sel.measure || document.getElementById('measureSelect').value,
+    aggregation:   state.sel.aggregation,
+    time_window:   getEffectiveWindow(),
+    loan_types:    state.sel.loan_types,
+    secured:       state.sel.secured,
+    account_status:state.sel.account_status,
+    ownership:     state.sel.ownership,
+    ...(thType === 'dpd' && thVal ? { dpd_op: thOp, dpd_val: parseInt(thVal) } : {}),
+    ...(thType === 'amount' && thVal ? { amount_op: thOp, amount_val: parseFloat(thVal) } : {}),
+  };
+
+  return {
+    build_name: buildName,
+    owner,
+    variable: varData,
+    auto_config: true,
+  };
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   EXPORT
+══════════════════════════════════════════════════════════════════════════ */
+async function exportCode(lang) {
+  if (!state.activeBuildId) { toast('Select a build first', 'error'); return; }
+  try {
+    const r = await fetch(`${API}/builder/export/${lang}?build_id=${state.activeBuildId}`);
+    if (!r.ok) throw new Error(r.statusText);
+    const text = await r.text();
+    const ext  = lang === 'python' ? '.py' : '_spark.py';
+    const build = state.builds.find(b => b.id === state.activeBuildId);
+    const fname = (build?.name || 'build') + ext;
+    const blob = new Blob([text], { type: 'text/plain' });
+    const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = fname; a.click();
+    toast(`${lang === 'python' ? 'Python' : 'PySpark'} code exported!`, 'success');
+  } catch (e) {
+    toast('Export failed: ' + e.message, 'error');
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   BREADCRUMB
+══════════════════════════════════════════════════════════════════════════ */
+function updateBreadcrumb() {
+  const bc = document.getElementById('breadcrumb');
+  bc.style.display = state.sel.variable_type ? 'flex' : 'none';
+  const set = (id, val, sep) => {
+    const el = document.getElementById(id);
+    if (val) { el.textContent = val; el.classList.remove('hidden'); }
+    else { el.classList.add('hidden'); }
+    const s = document.getElementById(sep);
+    if (s) s.classList.toggle('hidden', !val);
+  };
+  set('bc0', state.sel.variable_type, 'sep0');
+  set('bc1', state.sel.sub_category, 'sep1');
+  set('bc2', state.sel.measure, 'sep2');
+  set('bc3', state.sel.aggregation ? state.sel.aggregation + ' · ' + getEffectiveWindow() : null, null);
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   RESET
+══════════════════════════════════════════════════════════════════════════ */
+function resetForm() {
+  state.sel = { variable_type: null, sub_category: null, measure: null, aggregation: null, time_window: '12m', loan_types: [], secured: 'all', account_status: [], ownership: 'all', dpd_op: '>=', dpd_val: null, amount_op: '>=', amount_val: null, name: '' };
+  state.cascade = { sub_categories: [], measures: [], aggregations: [], scope_fields: [], threshold: null };
+  document.querySelectorAll('.type-card').forEach(c => c.classList.remove('selected'));
+  document.getElementById('subcatSelect').innerHTML = '<option value="">— select type first —</option>';
+  document.getElementById('subcatSelect').disabled = true;
+  document.getElementById('measureSelect').innerHTML = '<option value="">— select sub-category first —</option>';
+  document.getElementById('measureSelect').disabled = true;
+  document.getElementById('aggGroup').innerHTML = '<div class="field-placeholder">Select sub-category first</div>';
+  document.getElementById('scopeRow').innerHTML = '<div class="field-placeholder">Select type &amp; sub-category to configure scope</div>';
+  document.getElementById('step-threshold').classList.add('hidden');
+  document.getElementById('featureName').value = '';
+  document.getElementById('subcatDesc').textContent = '';
+  document.getElementById('thresholdVal').value = '';
+  renderTimeWindows();
+  updateBreadcrumb();
+}
+
+function resetSubCatDownstream() {
+  document.getElementById('subcatSelect').innerHTML = '<option value="">— select type first —</option>';
+  document.getElementById('subcatSelect').disabled = true;
+  resetMeasureDownstream();
+}
+
+function resetMeasureDownstream() {
+  document.getElementById('measureSelect').innerHTML = '<option value="">— select sub-category first —</option>';
+  document.getElementById('measureSelect').disabled = true;
+  document.getElementById('aggGroup').innerHTML = '<div class="field-placeholder">Select sub-category first</div>';
+  document.getElementById('scopeRow').innerHTML = '<div class="field-placeholder">Select type &amp; sub-category to configure scope</div>';
+  document.getElementById('step-threshold').classList.add('hidden');
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   TOAST
+══════════════════════════════════════════════════════════════════════════ */
+function toast(msg, type = 'info') {
+  const icons = { success: '✓', error: '✕', info: 'ℹ' };
+  const colors = { success: 'var(--green)', error: 'var(--red)', info: 'var(--blue)' };
+  const div = document.createElement('div');
+  div.className = `toast toast-${type}`;
+  div.innerHTML = `<span style="color:${colors[type]};font-size:16px;font-weight:700">${icons[type]}</span><span>${msg}</span>`;
+  document.getElementById('toastContainer').appendChild(div);
+  setTimeout(() => {
+    div.style.animation = 'slideOut .2s ease forwards';
+    setTimeout(() => div.remove(), 200);
+  }, 3000);
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   THRESHOLD LIVE UPDATE
+══════════════════════════════════════════════════════════════════════════ */
+document.getElementById('thresholdVal').addEventListener('input', autoName);
+document.getElementById('thresholdOp').addEventListener('change', autoName);
+document.getElementById('featureName').addEventListener('input', function() { state.sel.name = this.value; });
+</script>
+</body>
+</html>

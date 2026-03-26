@@ -1,0 +1,1249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>CreditIQ — Feature Builder</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=DM+Mono:wght@400;500&family=Syne:wght@600;700;800&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet"/>
+<link rel="stylesheet" href="style.css"/>
+</head>
+<body>
+
+<!-- ═══════════════════════════════════════════
+     SECTION 1: LOGIN PAGE
+     Shown by default. Hidden after login.
+═══════════════════════════════════════════ -->
+<div id="page-login">
+
+  <!-- Animated BG -->
+  <canvas id="bg"></canvas>
+
+  <!-- Layout -->
+  <div class="layout">
+
+  <!-- Login Card -->
+  <div class="login-card-wrap">
+
+    <!-- Logo -->
+    <div class="logo-wrap">
+      <div class="logo-icon">
+        <svg viewBox="0 0 32 32" fill="none">
+          <polygon points="16,2 30,16 16,30 2,16" fill="white" opacity="0.95"/>
+          <circle cx="16" cy="16" r="5.5" fill="white"/>
+        </svg>
+      </div>
+      <span class="logo-name">CreditIQ</span>
+    </div>
+
+    <!-- Heading -->
+    <div class="login-heading">
+      <h2>Welcome back 👋</h2>
+      <p>Sign in to your analytics workspace</p>
+    </div>
+
+    <!-- Tabs -->
+    <div class="login-tabs">
+      <button class="login-tab active" data-tab="signin">Sign In</button>
+      <button class="login-tab" data-tab="signup">Sign Up</button>
+    </div>
+
+    <!-- SIGN IN FORM -->
+    <form id="f-signin" class="login-form active" novalidate>
+      <div class="login-field">
+        <span class="material-icons-round login-field-icon">person_outline</span>
+        <input type="text" id="si-user" placeholder="Username" required/>
+      </div>
+      <div class="login-field">
+        <span class="material-icons-round login-field-icon">lock_outline</span>
+        <input type="password" id="si-pass" placeholder="Password" required/>
+        <button type="button" class="eye-btn" data-t="si-pass">
+          <span class="material-icons-round">visibility_off</span>
+        </button>
+      </div>
+      <div class="login-row-space">
+        <label class="login-remember">
+          <input type="checkbox"/> Remember me
+        </label>
+        <a href="#" class="login-forgot">Forgot password?</a>
+      </div>
+      <div id="msg-si"></div>
+      <button type="submit" class="login-btn">
+        Sign In <span class="material-icons-round">arrow_forward</span>
+      </button>
+      <div class="login-divider">or</div>
+      <div class="login-socials">
+        <button type="button" class="login-soc">
+          <svg width="16" height="16" viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>
+          Google
+        </button>
+        <button type="button" class="login-soc">
+          <svg width="16" height="16" viewBox="0 0 24 24"><path fill="#0A66C2" d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+          LinkedIn
+        </button>
+      </div>
+    </form>
+
+    <!-- SIGN UP FORM -->
+    <form id="f-signup" class="login-form" novalidate>
+      <div class="login-field">
+        <span class="material-icons-round login-field-icon">mail_outline</span>
+        <input type="email" id="su-email" placeholder="Work Email" required/>
+      </div>
+      <div class="login-field">
+        <span class="material-icons-round login-field-icon">person_outline</span>
+        <input type="text" id="su-user" placeholder="Username" required/>
+      </div>
+      <div class="login-field">
+        <span class="material-icons-round login-field-icon">lock_outline</span>
+        <input type="password" id="su-pass" placeholder="Password" required/>
+        <button type="button" class="eye-btn" data-t="su-pass">
+          <span class="material-icons-round">visibility_off</span>
+        </button>
+      </div>
+      <div class="login-strength">
+        <div class="s-bars">
+          <div class="s-bar" id="b1"></div>
+          <div class="s-bar" id="b2"></div>
+          <div class="s-bar" id="b3"></div>
+          <div class="s-bar" id="b4"></div>
+        </div>
+        <span class="s-lbl" id="s-lbl">Strength</span>
+      </div>
+      <div class="login-field">
+        <span class="material-icons-round login-field-icon">lock_outline</span>
+        <input type="password" id="su-conf" placeholder="Confirm Password" required/>
+      </div>
+      <label class="login-terms">
+        <input type="checkbox" id="su-terms"/>
+        I agree to the <a href="#">Terms</a> and <a href="#">Privacy Policy</a>
+      </label>
+      <div id="msg-su"></div>
+      <button type="submit" class="login-btn">
+        Create Account <span class="material-icons-round">arrow_forward</span>
+      </button>
+    </form>
+
+    <div class="login-footer">CreditIQ · SOC 2 · GDPR · Basel III Compliant</div>
+  </div><!-- end .login-card-wrap -->
+
+  <!-- Right Panel -->
+  <div class="rp-panel">
+    <div>
+      <div class="rp-label">Why CreditIQ</div>
+      <div class="rp-heading">Built for<br><span>Credit Intelligence</span></div>
+    </div>
+    <div class="feat-card" id="fc1">
+      <div class="feat-icon-wrap"><span class="material-icons-round">bolt</span></div>
+      <div class="feat-body">
+        <div class="feat-title" id="ft1"></div>
+        <div class="feat-sub" id="fs1"></div>
+      </div>
+    </div>
+    <div class="feat-card" id="fc2">
+      <div class="feat-icon-wrap"><span class="material-icons-round">auto_awesome</span></div>
+      <div class="feat-body">
+        <div class="feat-title" id="ft2"></div>
+        <div class="feat-sub" id="fs2"></div>
+      </div>
+    </div>
+    <div class="feat-card" id="fc3">
+      <div class="feat-icon-wrap"><span class="material-icons-round">account_balance</span></div>
+      <div class="feat-body">
+        <div class="feat-title" id="ft3"></div>
+        <div class="feat-sub" id="fs3"></div>
+      </div>
+    </div>
+    <div class="rp-tag">Trusted by 200+ lending institutions worldwide</div>
+  </div>
+
+  </div><!-- end .layout -->
+</div><!-- end #page-login -->
+
+
+<!-- ═══════════════════════════════════════════
+     SECTION 2: DASHBOARD
+     Hidden by default. Shown after login.
+     User picks "Start a new build" → goes to builder.
+═══════════════════════════════════════════ -->
+<div id="page-dashboard" style="display:none;">
+  <div class="app-background">
+    <div class="orb orb-one"></div>
+    <div class="orb orb-two"></div>
+    <div class="orb orb-three"></div>
+  </div>
+
+  <div id="content">
+    <nav class="top-nav">
+      <button class="brand" type="button" onclick="goToDashboard()">
+        <span class="brand-title">CreditIQ</span>
+        <span class="brand-subtitle">Variable Studio</span>
+      </button>
+      <div class="nav-actions">
+        <button class="ghost" type="button" onclick="startNewBuild()">+ New build</button>
+
+        <div class="user-menu">
+          <div class="user-trigger">
+            <span class="avatar" id="dash-user-avatar" data-user-avatar>G</span>
+            <span class="user-meta">
+              <span id="dash-user-display" class="user-name" data-user-display>Guest</span>
+              <span class="user-role">Corporate access</span>
+            </span>
+            <button class="user-trigger-toggle" type="button" aria-label="Open user menu" data-user-menu-trigger="dashboard" onclick="toggleDashboardUserMenu(event)">
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M6 9l6 6 6-6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+              </svg>
+            </button>
+          </div>
+          <div class="menu hidden" id="dash-user-dropdown" data-user-menu-dropdown="dashboard">
+            <button class="menu-item" type="button" onclick="openDashboardSettings()">Settings</button>
+            <button class="menu-item" type="button" onclick="doLogout()">Logout</button>
+          </div>
+        </div>
+      </div>
+    </nav>
+
+    <section class="view">
+      <div class="landing-hero">
+        <div class="hero-copy">
+          <div class="eyebrow">Welcome back</div>
+          <h2>Create intelligence for<br>corporate lending</h2>
+          <p>Pick up a prior build or spin up a brand-new run in just a few clicks. Everything stays organised in one delightful workspace.</p>
+          <div class="cta-row">
+            <button class="primary" type="button" onclick="startNewBuild()">Start a new build</button>
+            <button class="ghost" type="button" onclick="renderDashboard()">Refresh builds</button>
+          </div>
+        </div>
+
+        <aside class="hero-card" id="dash-prev-card">
+          <div class="hero-card-header">
+            <h3>Previous build</h3>
+            <p class="hint">Reopen your most recently saved build from here.</p>
+          </div>
+          <div class="hero-card-body">
+            <p id="dash-prev-name" class="hero-build-name">No builds yet</p>
+            <p id="dash-prev-meta" class="hero-build-meta"></p>
+            <p id="dash-prev-hint" class="hint">Start a new build to see it here.</p>
+            <button class="primary hidden" id="dash-open-prev" type="button" onclick="openPreviousBuild()">Open build</button>
+          </div>
+        </aside>
+      </div>
+
+      <div class="landing-builds">
+        <div class="landing-builds-header">
+          <div>
+            <h3>Your builds</h3>
+            <p id="landing-builds-hint" class="hint">Builds you have saved in this workspace appear here.</p>
+          </div>
+          <button class="ghost" type="button" onclick="startNewBuild()">+ New build</button>
+        </div>
+        <div id="landing-build-list" class="landing-build-grid"></div>
+      </div>
+    </section>
+  </div>
+</div><!-- end #page-dashboard -->
+
+
+<!-- ═══════════════════════════════════════════
+     SECTION 3: BUILDER
+     Hidden by default. Shown after "Start a new build".
+     This is the full index_backup.html builder UI.
+═══════════════════════════════════════════ -->
+<div id="page-builder" style="display:none;">
+  <div class="builder-shell">
+
+    <nav class="top-nav">
+      <button class="brand" type="button" onclick="goToDashboard()">
+        <span class="brand-title">CreditIQ</span>
+        <span class="brand-subtitle">Feature Builder</span>
+      </button>
+      <div class="nav-actions">
+        <button class="ghost" type="button" onclick="goToDashboard()">Dashboard</button>
+        <div class="user-menu">
+          <div class="user-trigger">
+            <span class="avatar" data-user-avatar>G</span>
+            <span class="user-meta">
+              <span class="user-name" data-user-display>Guest</span>
+              <span class="user-role">Corporate access</span>
+            </span>
+            <button class="user-trigger-toggle" type="button" aria-label="Open user menu" data-user-menu-trigger="builder" onclick="toggleDashboardUserMenu(event, 'builder')">
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M6 9l6 6 6-6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+              </svg>
+            </button>
+          </div>
+          <div class="menu hidden" data-user-menu-dropdown="builder">
+            <button class="menu-item" type="button" onclick="openDashboardSettings()">Settings</button>
+            <button class="menu-item" type="button" onclick="doLogout()">Logout</button>
+          </div>
+        </div>
+      </div>
+    </nav>
+
+    <div class="builder-topbar hidden">
+      <div class="builder-context-main">
+        <div class="builder-context-label">Variable Builder</div>
+        <div class="nav-crumbs">
+          <span id="crumb-build">-</span>
+          <span class="sep">&rsaquo;</span>
+          <span id="crumb-bureau">-</span>
+          <span class="sep">&rsaquo;</span>
+          <span id="crumb-mode">-</span>
+        </div>
+      </div>
+      <span id="hdr-feat-count" class="nav-badge">0 variables</span>
+    </div>
+
+<!-- Legacy builder nav kept for reference
+<nav class="topnav" style="display:none;">
+  <div class="nav-logo">
+    <div class="nav-logo-dot">◈</div>
+    Variable Builder
+  </div>
+  <div class="nav-crumbs">
+    <span id="crumb-build">—</span>
+    <span class="sep">›</span>
+    <span id="crumb-bureau">—</span>
+    <span class="sep">›</span>
+    <span id="crumb-mode">—</span>
+  </div>
+  <div class="nav-right" style="display:flex;align-items:center;gap:10px;">
+    <span id="hdr-feat-count" class="nav-badge">0 variables</span>
+    <span id="user-display" style="font-size:12px;font-weight:600;color:var(--text2);opacity:0.8;"></span>
+    <button onclick="goToDashboard()" title="Dashboard" style="background:none;border:1.5px solid var(--border);border-radius:7px;padding:4px 10px;font-size:11px;font-weight:700;color:var(--text2);cursor:pointer;letter-spacing:.3px;transition:all .2s;" onmouseover="this.style.borderColor='var(--accent)';this.style.color='var(--accent)'" onmouseout="this.style.borderColor='var(--border)';this.style.color='var(--text2)'">← Dashboard</button>
+    <button onclick="doLogout()" title="Logout" style="background:none;border:1.5px solid var(--border);border-radius:7px;padding:4px 10px;font-size:11px;font-weight:700;color:var(--text2);cursor:pointer;letter-spacing:.3px;transition:all .2s;" onmouseover="this.style.borderColor='var(--danger)';this.style.color='var(--danger)'" onmouseout="this.style.borderColor='var(--border)';this.style.color='var(--text2)'">⎋ Logout</button>
+  </div>
+</nav> -->
+
+<div class="page">
+
+<div class="builder-setup-shell" id="builder-setup-shell">
+  <div class="builder-setup-hero">
+    <div class="builder-setup-hero-copy">
+      <div class="builder-setup-kicker">Build workspace</div>
+      <h1 class="builder-setup-title" id="builder-heading">New Build</h1>
+      <p class="builder-setup-subtitle" id="builder-subheading">Start a fresh configuration and add your first variable.</p>
+    </div>
+  </div>
+
+  <div class="builder-setup-surface">
+    <div class="builder-setup-surface-head">
+      <h2>Variable build workspace</h2>
+      <p>Give each build a unique name, choose its bureau scope, and then add as many variables as you need.</p>
+    </div>
+
+<!-- ═══ SCREEN 0: Build Name ═══ -->
+<div class="screen active" id="screen-0">
+  <div class="setup-wrap builder-setup-wrap">
+    <div class="card builder-stage-panel" style="padding:32px;">
+      <div class="stage-label">Step 1 of 3 · Create Build</div>
+      <div class="build-title">Name your build</div>
+      <div class="build-sub">Give this variable build a unique name and description.</div>
+      <div class="field-group">
+        <label class="field-label">Build Name <span style="color:var(--danger)">*</span></label>
+        <input class="input-field" id="build-name" type="text" placeholder="e.g. hii_trade_v2, scorecard_pl_2025" />
+      </div>
+      <div class="field-group">
+        <label class="field-label">Description <span style="color:var(--text3);font-weight:400">(optional)</span></label>
+        <input class="input-field" id="build-desc" type="text" placeholder="Short description of this feature set..." />
+      </div>
+      <div class="builder-setup-action-row builder-setup-action-row-full">
+        <button class="btn btn-next" onclick="goBureauScreen()">Next → Choose Bureau</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ SCREEN 1: Bureau ═══ -->
+<div class="screen" id="screen-1">
+  <div class="setup-wrap builder-setup-wrap">
+    <div class="card builder-stage-panel" style="padding:32px;">
+      <div class="stage-label">Step 2 of 3 · Bureau & Scope</div>
+      <div class="build-title">Select Credit Bureau</div>
+      <div class="build-sub">Choose the bureau data source for this build.</div>
+      <div class="field-group scope-field-group">
+        <label class="field-label">Credit Bureau</label>
+        <div class="bureau-grid" id="bureau-grid">
+          <div class="bureau-card" onclick="selBureau('CIBIL',this)"><div class="bureau-name">CIBIL</div><div class="bureau-desc">TransUnion CIBIL · India's primary bureau</div></div>
+          <div class="bureau-card" onclick="selBureau('Experian',this)"><div class="bureau-name">Experian</div><div class="bureau-desc">Experian India bureau data</div></div>
+          <div class="bureau-card" onclick="selBureau('CRIF',this)"><div class="bureau-name">CRIF High Mark</div><div class="bureau-desc">CRIF HM microfinance & retail</div></div>
+          <div class="bureau-card" onclick="selBureau('Equifax',this)"><div class="bureau-name">Equifax</div><div class="bureau-desc">Equifax India credit data</div></div>
+        </div>
+      </div>
+      <div class="field-group scope-field-group">
+        <label class="field-label">File / Processing Type</label>
+        <div class="filetype-grid" id="filetype-grid">
+          <div class="ft-card" onclick="selFileType('Batch',this)"><div class="ft-icon" style="background:#ede9ff;">📦</div><div><div class="ft-title">Batch</div><div class="ft-sub">Process multiple records at once via file upload</div></div></div>
+          <div class="ft-card" onclick="selFileType('Single FID',this)"><div class="ft-icon" style="background:#eff6ff;">🔍</div><div><div class="ft-title">Single FID</div><div class="ft-sub">Real-time single customer lookup</div></div></div>
+        </div>
+      </div>
+      <div class="builder-setup-action-row">
+        <button class="btn btn-back" type="button" onclick="backToBuildDetails()">← Back</button>
+        <button class="btn btn-next" onclick="goBuilderScreen()">Next → Build Variables</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+  </div>
+</div>
+
+<!-- ═══ SCREEN BUILDER ═══ -->
+<div class="screen" id="screen-builder">
+  <div class="builder-layout">
+    <!-- LEFT -->
+    <div>
+      <div class="card">
+        <!-- Stage overview -->
+        <div class="stage-overview">
+          <div class="stage-info">
+            <div class="stage-tag">Stage 1 · Build overview</div>
+            <div class="stage-meta">
+              <span id="ov-build">—</span><div class="dot-sep"></div>
+              <span id="ov-bureau">—</span><div class="dot-sep"></div>
+              <span id="ov-mode">—</span>
+            </div>
+          </div>
+          <button class="btn btn-back" type="button" onclick="backToBuildScope()" style="font-size:12px;padding:6px 12px;">Edit</button>
+        </div>
+
+        <div class="trade-notice" id="trade-notice">
+          ⚠️ Trade variables are built on tradeline data — account-level. Ensure tradeline data is part of your bureau file.
+        </div>
+        <div class="account-notice" id="account-notice">
+          👤 Account variables are point-in-time portfolio snapshots — built on current account records, not monthly history panels.
+        </div>
+        <div class="trade-notice" id="tradeh-notice" style="background:var(--tradeh-light);border-color:rgba(3,105,161,0.25);color:var(--tradeh);">
+          🕐 Trade History variables operate on payment history data — month-by-month DPD / balance sequences (DPD_String, Balance_History). Ensure history columns are present in your bureau file.
+        </div>
+
+        <!-- 6-step progress -->
+        <div class="progress-bar">
+          <div class="steps-track">
+            <div class="step-item active" id="s1"><div class="step-num" id="sn1">1</div><div class="step-lbl">Type</div></div>
+            <div class="step-item" id="s2"><div class="step-num" id="sn2">2</div><div class="step-lbl">Sub-cat</div></div>
+            <div class="step-item" id="s3"><div class="step-num" id="sn3">3</div><div class="step-lbl" id="s3-lbl">Scope</div></div>
+            <div class="step-item" id="s4"><div class="step-num" id="sn4">4</div><div class="step-lbl">Time</div></div>
+            <div class="step-item" id="s5"><div class="step-num" id="sn5">5</div><div class="step-lbl">Conditions</div></div>
+            <div class="step-item" id="s6"><div class="step-num" id="sn6">6</div><div class="step-lbl">Review</div></div>
+          </div>
+        </div>
+
+        <!-- ─── SP1: Type ─── -->
+        <div class="substep-panel active" id="sp1">
+          <div class="substep-title">Variable details — Select type</div>
+          <div class="var-type-grid" id="type-card-grid">
+            <div class="vt-card sel" onclick="selVarType('Enquiry',this)" id="vt-enquiry"><div class="vt-icon">🔍</div><div class="vt-name">Enquiry</div></div>
+            <div class="vt-card" onclick="selVarType('Trade',this)" id="vt-trade"><div class="vt-icon">⇌</div><div class="vt-name">Trade</div></div>
+            <div class="vt-card" onclick="selVarType('Account',this)" id="vt-account"><div class="vt-icon">👤</div><div class="vt-name">Account</div></div>
+            <div class="vt-card" onclick="selVarType('Trade History',this)" id="vt-tradehistory"><div class="vt-icon">🕐</div><div class="vt-name">Trade History</div></div>
+            <div class="vt-card" onclick="selVarType('Other',this)" id="vt-other"><div class="vt-icon">···</div><div class="vt-name">Other</div></div>
+          </div>
+        </div>
+
+        <!-- ─── SP2: Sub-category & Measure & Agg ─── -->
+        <div class="substep-panel" id="sp2">
+          <div class="substep-title">Sub-category & Measure</div>
+          <div id="domain-context-banner" style="display:flex;align-items:center;gap:8px;margin-bottom:14px;padding:9px 13px;border-radius:8px;font-size:12px;font-weight:600;"></div>
+          <div class="sdiv">Sub-category</div>
+          <div class="subcat-grid" id="subcat-grid"></div>
+
+          <div id="measure-section" style="display:none;">
+            <div class="sdiv" style="margin-top:16px;">Measure / Value Base</div>
+            <div class="option-chips" id="measure-chips"></div>
+
+            <div id="balance-type-section" style="display:none;">
+              <div class="info-box balance-box">
+                💰 <strong>Balance Type</strong> maps directly to a dataset column. Select the measure above to auto-select the relevant balance field.
+              </div>
+            </div>
+
+            <div class="sdiv">Aggregation Type</div>
+            <div class="option-chips">
+              <div class="chip sel" id="agg-type-simple" onclick="selectAggType('simple', this)">Simple</div>
+              <div class="chip" id="agg-type-ratio" onclick="selectAggType('ratio', this)">Ratio</div>
+            </div>
+
+            <!-- Simple aggregation panel -->
+            <div id="simple-agg-panel">
+              <div class="sdiv">Aggregation</div>
+              <div class="option-chips" id="agg-chips"></div>
+              <div id="pct-row" style="display:none;">
+                <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px;">
+                  <span style="font-size:13px;color:var(--text2);font-weight:500;">Single percentile:</span>
+                  <input type="number" class="thresh-val" id="pct-val" style="width:90px;" min="1" max="99" value="90">
+                </div>
+                <div id="pct-multi-row" style="display:none;">
+                  <div class="sdiv" style="margin-top:0;margin-bottom:6px;">Multi-Percentile Output (select all needed)</div>
+                  <div class="pct-multi-grid">
+                    <div class="pct-chip" onclick="togglePctChip(this,10)">P10</div>
+                    <div class="pct-chip" onclick="togglePctChip(this,25)">P25</div>
+                    <div class="pct-chip" onclick="togglePctChip(this,50)">P50</div>
+                    <div class="pct-chip sel" onclick="togglePctChip(this,75)">P75</div>
+                    <div class="pct-chip sel" onclick="togglePctChip(this,90)">P90</div>
+                    <div class="pct-chip" onclick="togglePctChip(this,95)">P95</div>
+                    <div class="pct-chip" onclick="togglePctChip(this,99)">P99</div>
+                  </div>
+                  <div class="hint">Selected percentiles → generates one variable per percentile</div>
+                </div>
+              </div>
+              <div id="stat-min-rec-hint" style="display:none;" class="hint"></div>
+            </div>
+
+            <!-- Ratio aggregation panel -->
+            <div id="ratio-agg-panel" style="display:none;">
+              <div class="sdiv">Ratio Engine Type</div>
+              <div class="ratio-type-tabs">
+                <div class="ratio-type-tab sel" id="rtab-simple" onclick="selRatioType('simple',this)">⚖️ Simple Ratio</div>
+                <div class="ratio-type-tab" id="rtab-w2w" onclick="selRatioType('w2w',this)">📊 Window-to-Window</div>
+                <div class="ratio-type-tab" id="rtab-cross" onclick="selRatioType('cross',this)">🔀 Cross-Metric</div>
+                <div class="ratio-type-tab" id="rtab-norm" onclick="selRatioType('norm',this)">📐 Normalized</div>
+                <div class="ratio-type-tab" id="rtab-p2p" onclick="selRatioType('p2p',this)">🔄 Product-to-Product</div>
+              </div>
+              <div class="ratio-type-panel active" id="rpanel-simple">
+                <div class="sdiv" style="margin-top:0;">Ratio Method</div>
+                <div class="option-chips" id="ratio-agg-chips"></div>
+                <div class="ratio-half numerator">
+                  <div class="ratio-half-title">▲ Numerator Conditions</div>
+                  <div id="ratio-num-conditions"></div>
+                </div>
+                <div class="ratio-half denominator">
+                  <div class="ratio-half-title">▼ Denominator Conditions</div>
+                  <div id="ratio-den-conditions"></div>
+                  <div class="hint" style="margin-top:8px;">Leave denominator blank → uses full portfolio scope as denominator.</div>
+                </div>
+              </div>
+              <div class="ratio-type-panel" id="rpanel-w2w">
+                <div class="info-box ratio-box" style="margin-top:8px;">📊 <strong>Window Ratio:</strong> Same metric at two windows — e.g. Balance(3m) / Balance(12m)</div>
+                <div class="sdiv">Select Metric</div>
+                <div class="option-chips" id="w2w-metric-chips"></div>
+                <div class="w2w-row" style="margin-top:12px;">
+                  <div class="w2w-label">Numerator:</div>
+                  <div class="option-chips" style="margin-bottom:0;gap:6px;">
+                    <div class="w2w-metric-chip" onclick="selW2W('numerator','1m',this)">1m</div>
+                    <div class="w2w-metric-chip" onclick="selW2W('numerator','3m',this)">3m</div>
+                    <div class="w2w-metric-chip" onclick="selW2W('numerator','6m',this)">6m</div>
+                    <div class="w2w-metric-chip" onclick="selW2W('numerator','12m',this)">12m</div>
+                  </div>
+                </div>
+                <div class="w2w-row">
+                  <div class="w2w-label">Denominator:</div>
+                  <div class="option-chips" style="margin-bottom:0;gap:6px;">
+                    <div class="w2w-metric-chip" onclick="selW2W('denominator','6m',this)">6m</div>
+                    <div class="w2w-metric-chip" onclick="selW2W('denominator','12m',this)">12m</div>
+                    <div class="w2w-metric-chip" onclick="selW2W('denominator','24m',this)">24m</div>
+                  </div>
+                </div>
+                <div id="w2w-formula-box" class="formula-mono" style="margin-top:10px;"></div>
+              </div>
+              <div class="ratio-type-panel" id="rpanel-cross">
+                <div class="info-box ratio-box" style="margin-top:8px;">🔀 <strong>Cross-Metric Ratio:</strong> Two different metrics at same window — e.g. Overdue(12m) / Balance(12m)</div>
+                <div style="display:grid;grid-template-columns:1fr auto 1fr;gap:12px;align-items:end;margin-top:10px;">
+                  <div><div class="sdiv" style="margin-top:0;">Numerator Metric</div><div class="option-chips" id="cross-num-chips"></div></div>
+                  <div style="font-size:20px;color:var(--text3);padding-bottom:8px;">÷</div>
+                  <div><div class="sdiv" style="margin-top:0;">Denominator Metric</div><div class="option-chips" id="cross-den-chips"></div></div>
+                </div>
+                <div id="cross-formula-box" class="formula-mono" style="margin-top:10px;"></div>
+              </div>
+              <div class="ratio-type-panel" id="rpanel-norm">
+                <div class="info-box ratio-box" style="margin-top:8px;">📐 <strong>Normalized Ratio:</strong> Express a metric as a percentage of a portfolio-level benchmark</div>
+                <div class="sdiv" style="margin-top:8px;">Metric to Normalize</div>
+                <div class="option-chips" id="norm-metric-chips"></div>
+                <div class="sdiv">Benchmark</div>
+                <div class="option-chips" id="norm-bench-chips"></div>
+                <div id="norm-formula-box" class="formula-mono" style="margin-top:10px;"></div>
+              </div>
+              <div class="ratio-type-panel" id="rpanel-p2p">
+                <div class="info-box ratio-box" style="margin-top:8px;">🔄 <strong>Product-to-Product Ratio:</strong> Compare the same metric across two loan product types</div>
+                <div class="sdiv" style="margin-top:8px;">Metric</div>
+                <div class="option-chips" id="p2p-metric-chips"></div>
+                <div style="display:grid;grid-template-columns:1fr auto 1fr;gap:12px;align-items:end;margin-top:10px;">
+                  <div><div class="sdiv" style="margin-top:0;">Product A (Numerator)</div><div class="option-chips" id="p2p-proda-chips"></div></div>
+                  <div style="font-size:20px;color:var(--text3);padding-bottom:8px;">÷</div>
+                  <div><div class="sdiv" style="margin-top:0;">Product B (Denominator)</div><div class="option-chips" id="p2p-prodb-chips"></div></div>
+                </div>
+                <div id="p2p-formula-box" class="formula-mono" style="margin-top:10px;"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ─── SP3: Scope ─── -->
+        <div class="substep-panel" id="sp3">
+          <div class="substep-title" id="sp3-title">Scope / Segment</div>
+          <div id="sp3-content"></div>
+        </div>
+
+        <!-- ─── SP4: Time Window ─── -->
+        <div class="substep-panel" id="sp4">
+          <div class="substep-title">Time Window</div>
+          <div id="sp4-content"></div>
+        </div>
+
+        <!-- ─── SP5: Conditions ─── -->
+        <div class="substep-panel" id="sp5">
+          <div class="substep-title">Conditions & Filters</div>
+
+          <!-- Account conditions -->
+          <div id="cond-account-info" style="display:none;">
+            <div class="sdiv" style="margin-top:0;">Product Scope</div>
+            <div class="filter-chips" id="acc-product-chips">
+              <div class="fchip sel" id="aprod-all" onclick="selAccProduct('all',this)">All Products</div>
+              <div class="fchip" onclick="toggleAccScope(this,'loanType','HL')">HL</div>
+              <div class="fchip" onclick="toggleAccScope(this,'loanType','AL')">AL</div>
+              <div class="fchip" onclick="toggleAccScope(this,'loanType','PL')">PL</div>
+              <div class="fchip" onclick="toggleAccScope(this,'loanType','BL')">BL</div>
+              <div class="fchip" onclick="toggleAccScope(this,'loanType','CC')">CC</div>
+              <div class="fchip" onclick="toggleAccScope(this,'loanType','GL')">GL</div>
+              <div class="fchip" onclick="toggleAccScope(this,'loanType','LAP')">LAP</div>
+            </div>
+            <div class="hint" style="margin-top:4px;">Leave blank = All loan types</div>
+            <div class="sdiv" style="margin-top:16px;">Secured / Unsecured</div>
+            <div class="filter-chips">
+              <div class="fchip sel" id="asec-all" onclick="selAccSecured('all',this)">All</div>
+              <div class="fchip" id="asec-sec" onclick="selAccSecured('secured',this)">Secured</div>
+              <div class="fchip" id="asec-unsec" onclick="selAccSecured('unsecured',this)">Unsecured</div>
+              <div class="fchip" id="asec-rev" onclick="selAccSecured('revolving',this)">Revolving</div>
+              <div class="fchip" id="asec-inst" onclick="selAccSecured('installment',this)">Installment</div>
+            </div>
+            <div class="sdiv" style="margin-top:16px;">Account Status <span style="font-weight:400;color:var(--text3)">(multi-select)</span></div>
+            <div class="filter-chips" id="acc-status-chips">
+              <div class="fchip sel" id="astat-all" onclick="selAccStatus('all',this)">All</div>
+              <div class="fchip" id="astat-active" onclick="toggleAccStatus(this,'Active')">Active</div>
+              <div class="fchip" id="astat-closed" onclick="toggleAccStatus(this,'Closed')">Closed</div>
+              <div class="fchip status-wo" id="astat-wo" onclick="toggleAccStatus(this,'Written-Off')">Written Off</div>
+              <div class="fchip status-settled" id="astat-settled" onclick="toggleAccStatus(this,'Settled')">Settled</div>
+              <div class="fchip status-suit" id="astat-suit" onclick="toggleAccStatus(this,'Suit-Filed')">Suit Filed</div>
+              <div class="fchip" id="astat-npa" onclick="toggleAccStatus(this,'NPA')">NPA</div>
+              <div class="fchip" id="astat-sma" onclick="toggleAccStatus(this,'SMA')">SMA</div>
+              <div class="fchip" id="astat-rest" onclick="toggleAccStatus(this,'Restructured')">Restructured</div>
+            </div>
+            <div class="sdiv" style="margin-top:16px;">Ownership Type</div>
+            <div class="filter-chips">
+              <div class="fchip sel" id="aown-all" onclick="selAccOwnership('all',this)">All</div>
+              <div class="fchip" id="aown-ind" onclick="selAccOwnership('individual',this)">Individual</div>
+              <div class="fchip" id="aown-joint" onclick="selAccOwnership('joint',this)">Joint</div>
+              <div class="fchip" id="aown-guar" onclick="selAccOwnership('guarantor',this)">Guarantor</div>
+            </div>
+            <div class="sdiv" style="margin-top:16px;">Time Context</div>
+            <div style="display:flex;flex-direction:column;gap:6px;" id="acc-time-ctx">
+              <div class="fchip sel" id="atctx-snapshot" onclick="selAccTimeCtx('snapshot',this)" style="width:fit-content;">📸 Current Snapshot</div>
+              <div class="fchip" id="atctx-opened" onclick="selAccTimeCtx('opened_in',this)" style="width:fit-content;">📅 Opened In Period</div>
+              <div class="fchip" id="atctx-active" onclick="selAccTimeCtx('active_in',this)" style="width:fit-content;">🔄 Active During Period</div>
+              <div class="fchip" id="atctx-closed" onclick="selAccTimeCtx('closed_in',this)" style="width:fit-content;">🔒 Closed In Period</div>
+              <div class="fchip" id="atctx-dpd" onclick="selAccTimeCtx('dpd_in',this)" style="width:fit-content;">⚠️ Had DPD Event In Period</div>
+              <div class="fchip" id="atctx-ever" onclick="selAccTimeCtx('ever',this)" style="width:fit-content;">📖 Ever (all time)</div>
+            </div>
+            <div id="acc-time-period" style="display:none;margin-top:12px;">
+              <div class="sdiv">Period</div>
+              <div class="filter-chips" id="acc-period-chips">
+                <div class="fchip" onclick="selAccPeriod(this,'3')">3m</div>
+                <div class="fchip sel" onclick="selAccPeriod(this,'6')">6m</div>
+                <div class="fchip" onclick="selAccPeriod(this,'12')">12m</div>
+                <div class="fchip" onclick="selAccPeriod(this,'24')">24m</div>
+                <div class="fchip" onclick="selAccPeriod(this,'36')">36m</div>
+              </div>
+            </div>
+            <div id="acc-util-engine-panel" style="display:none;margin-top:16px;"></div>
+            <div id="acc-payment-engine-panel" style="display:none;margin-top:16px;"></div>
+            <div id="acc-creditmix-panel" style="display:none;margin-top:16px;"></div>
+            <div id="acc-cross-entity-panel" style="display:none;margin-top:16px;"></div>
+            <div style="margin-top:16px;padding:12px 14px;border:1px dashed var(--border);border-radius:8px;background:var(--bg);">
+              <div style="font-size:11px;font-weight:700;color:var(--text3);letter-spacing:.5px;margin-bottom:10px;">⚙ THRESHOLD CONDITIONS <span style="font-weight:400;font-style:italic;">(optional)</span></div>
+              <div style="display:flex;flex-wrap:wrap;gap:10px;align-items:center;">
+                <div style="font-size:12px;color:var(--text2);font-weight:600;">Amount field:</div>
+                <select id="acc-thresh-field" style="padding:4px 8px;border-radius:6px;border:1px solid var(--border);font-size:12px;background:var(--white);">
+                  <option value="">— None —</option>
+                  <option value="current_balance">Current Balance</option>
+                  <option value="sanction_amount">Sanction Amount</option>
+                  <option value="credit_limit">Credit Limit</option>
+                  <option value="overdue_amount">Overdue Amount</option>
+                  <option value="emi_amount">EMI Amount</option>
+                  <option value="dpd">DPD Value</option>
+                  <option value="utilization">Utilization %</option>
+                  <option value="vintage_months">Vintage (months)</option>
+                </select>
+                <select id="acc-thresh-op" style="padding:4px 8px;border-radius:6px;border:1px solid var(--border);font-size:12px;background:var(--white);">
+                  <option value=">">&gt;</option>
+                  <option value=">=">&gt;=</option>
+                  <option value="=">=</option>
+                  <option value="<">&lt;</option>
+                </select>
+                <input type="number" id="acc-thresh-val" class="thresh-val" placeholder="value" style="width:100px;">
+              </div>
+            </div>
+          </div>
+
+          <!-- Recency conditions -->
+          <div id="cond-recency-info" style="display:none;"></div>
+          <!-- Trend engine -->
+          <div id="cond-trend-info" style="display:none;"></div>
+          <!-- Balance dynamics -->
+          <div id="cond-balance-dynamics-info" style="display:none;"></div>
+          <!-- Trade conditions -->
+          <div id="cond-trade-dpd" style="display:none;">
+            <div class="sdiv">DPD Condition <span style="font-weight:400;color:var(--text3)">(optional)</span></div>
+            <div class="thresh-row">
+              <select class="thresh-op" id="dpd-op"><option>&gt;=</option><option>&gt;</option><option>=</option><option>&lt;</option></select>
+              <input type="number" class="thresh-val" id="dpd-val" placeholder="e.g. 30, 60, 90">
+            </div>
+            <div class="hint">30 = SMA · 60 = Sub-standard · 90 = Doubtful / NPA</div>
+          </div>
+          <div id="cond-trade-overdue" style="display:none;margin-top:14px;">
+            <div class="sdiv">Overdue Amount</div>
+            <div class="thresh-row">
+              <select class="thresh-op" id="overdue-op"><option>&gt;</option><option>&gt;=</option><option>=</option></select>
+              <input type="number" class="thresh-val" id="overdue-val" placeholder="e.g. 0, 1000">
+            </div>
+          </div>
+          <div id="cond-trade-util" style="display:none;margin-top:14px;">
+            <div class="sdiv">Utilization Threshold</div>
+            <div class="thresh-row">
+              <select class="thresh-op" id="util-op"><option>&gt;=</option><option>&gt;</option><option>&lt;=</option></select>
+              <input type="number" class="thresh-val" id="util-val" placeholder="0.0–1.0, e.g. 0.8" step="0.01" max="1">
+            </div>
+          </div>
+          <div id="cond-trade-flags" style="display:none;margin-top:14px;">
+            <div class="sdiv">Distress Flags</div>
+            <div class="filter-chips">
+              <div class="fchip" onclick="toggleFChip(this,'tradeFlags','writeoff')">Writeoff</div>
+              <div class="fchip" onclick="toggleFChip(this,'tradeFlags','restructured')">Restructured</div>
+              <div class="fchip" onclick="toggleFChip(this,'tradeFlags','settled')">Settled</div>
+              <div class="fchip" onclick="toggleFChip(this,'tradeFlags','suit_filed')">Suit Filed</div>
+              <div class="fchip" onclick="toggleFChip(this,'tradeFlags','npa')">NPA</div>
+            </div>
+          </div>
+          <div id="cond-trade-lender" style="display:none;margin-top:14px;">
+            <div class="sdiv">Lender</div>
+            <div class="filter-chips" id="filter-lender-trade">
+              <div class="fchip" onclick="toggleFChip(this,'lender','HDFC')">HDFC</div>
+              <div class="fchip" onclick="toggleFChip(this,'lender','ICICI')">ICICI</div>
+              <div class="fchip" onclick="toggleFChip(this,'lender','SBI')">SBI</div>
+              <div class="fchip" onclick="toggleFChip(this,'lender','AXIS')">AXIS</div>
+              <div class="fchip" onclick="toggleFChip(this,'lender','KOTAK')">KOTAK</div>
+            </div>
+          </div>
+          <div id="cond-dpd-bucket" style="display:none;margin-top:14px;">
+            <div class="sdiv">DPD Bucket Filter</div>
+            <div class="filter-chips">
+              <div class="fchip" onclick="toggleFChip(this,'dpd_bucket','0')">DPD = 0 (Clean)</div>
+              <div class="fchip" onclick="toggleFChip(this,'dpd_bucket','1_29')">DPD 1–29 (Late)</div>
+              <div class="fchip" onclick="toggleFChip(this,'dpd_bucket','30_59')">DPD 30–59 (SMA)</div>
+              <div class="fchip" onclick="toggleFChip(this,'dpd_bucket','60_89')">DPD 60–89 (SS)</div>
+              <div class="fchip" onclick="toggleFChip(this,'dpd_bucket','90plus')">DPD 90+ (NPA)</div>
+            </div>
+          </div>
+          <div id="cond-utilization-band" style="display:none;margin-top:14px;">
+            <div class="sdiv">Utilization Band Filter</div>
+            <div class="filter-chips">
+              <div class="fchip" onclick="toggleFChip(this,'util_band','low')">Low (&lt;30%)</div>
+              <div class="fchip" onclick="toggleFChip(this,'util_band','medium')">Medium (30–60%)</div>
+              <div class="fchip" onclick="toggleFChip(this,'util_band','high')">High (60–80%)</div>
+              <div class="fchip" onclick="toggleFChip(this,'util_band','very_high')">Very High (≥80%)</div>
+              <div class="fchip" onclick="toggleFChip(this,'util_band','maxed')">Maxed (≥95%)</div>
+            </div>
+          </div>
+          <div id="cond-account-age" style="display:none;margin-top:14px;">
+            <div class="sdiv">Account Age Band</div>
+            <div class="filter-chips">
+              <div class="fchip" onclick="toggleFChip(this,'account_age','new')">New (&lt;12m)</div>
+              <div class="fchip" onclick="toggleFChip(this,'account_age','young')">Young (12–24m)</div>
+              <div class="fchip" onclick="toggleFChip(this,'account_age','mature')">Mature (24–48m)</div>
+              <div class="fchip" onclick="toggleFChip(this,'account_age','seasoned')">Seasoned (48m+)</div>
+            </div>
+          </div>
+          <div id="cond-mob-bucket" style="display:none;margin-top:14px;">
+            <div class="sdiv">MOB (Months-on-Book) Bucket</div>
+            <div class="filter-chips">
+              <div class="fchip" onclick="toggleFChip(this,'mob_bucket','mob_0_3')">MOB 0–3</div>
+              <div class="fchip" onclick="toggleFChip(this,'mob_bucket','mob_4_6')">MOB 4–6</div>
+              <div class="fchip" onclick="toggleFChip(this,'mob_bucket','mob_7_12')">MOB 7–12</div>
+              <div class="fchip" onclick="toggleFChip(this,'mob_bucket','mob_13_24')">MOB 13–24</div>
+              <div class="fchip" onclick="toggleFChip(this,'mob_bucket','mob_25plus')">MOB 25+</div>
+            </div>
+          </div>
+          <div id="cond-payment-status" style="display:none;margin-top:14px;">
+            <div class="sdiv">Payment Status Filter</div>
+            <div class="filter-chips">
+              <div class="fchip" onclick="toggleFChip(this,'payment_status','on_time')">On-Time</div>
+              <div class="fchip" onclick="toggleFChip(this,'payment_status','late')">Late (1–29 DPD)</div>
+              <div class="fchip" onclick="toggleFChip(this,'payment_status','missed')">Missed (30+ DPD)</div>
+              <div class="fchip" onclick="toggleFChip(this,'payment_status','partial')">Partial</div>
+              <div class="fchip" onclick="toggleFChip(this,'payment_status','skipped')">Skipped / No Record</div>
+            </div>
+          </div>
+
+          <!-- No conditions message -->
+          <div id="no-conditions-msg" style="display:none;font-size:12px;color:var(--text3);text-align:center;padding:16px 8px;">
+            No specific conditions available for this selection.
+          </div>
+
+          <!-- Validation panel -->
+          <div id="validation-panel" class="validation-panel" style="display:none;"></div>
+
+          <!-- Advanced rule builder -->
+          <div style="margin-top:18px;">
+            <div class="sdiv">
+              Advanced Condition Builder
+              <span style="font-weight:400;color:var(--text3);margin-left:6px;">(A AND B) OR (C AND D)</span>
+              <span id="rule-builder-badge" style="font-size:9px;font-weight:700;padding:2px 7px;border-radius:4px;background:var(--accent-light);color:var(--accent);margin-left:8px;display:none;">ACTIVE</span>
+            </div>
+            <div class="rule-builder-wrap">
+              <div class="rule-builder-header">
+                <div class="rule-builder-title">🔧 Filter Rule Composer</div>
+                <button class="rule-act-btn" onclick="clearRuleBuilder()">Clear All</button>
+              </div>
+              <div class="rule-builder-body">
+                <div id="rule-builder-groups"></div>
+                <button class="rule-add-btn" onclick="addRuleGroup()">+ Add Condition Group</button>
+                <div id="rule-dsl-section" style="display:none;margin-top:10px;">
+                  <div class="sdiv" style="margin-top:0;font-size:10px;">Generated Rule DSL</div>
+                  <pre class="rule-dsl-box" id="rule-dsl-preview">(no conditions)</pre>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Transition / Vintage / Stability panels -->
+          <div id="cond-transition-info" style="display:none;margin-top:14px;"></div>
+          <div id="cond-vintage-info" style="display:none;margin-top:14px;"></div>
+          <div id="cond-stability-info" style="display:none;margin-top:14px;"></div>
+
+          <!-- Post-processing -->
+          <div id="pp-section" style="margin-top:18px;display:none;">
+            <div class="sdiv">Post-processing</div>
+            <div class="pp-row" id="pp-cards"></div>
+            <div id="cap-params" style="display:none;margin-top:8px;">
+              <div class="thresh-row">
+                <input type="number" class="thresh-val" id="cap-min" placeholder="min cap" style="width:100px;">
+                <span style="color:var(--text3);font-size:12px;">to</span>
+                <input type="number" class="thresh-val" id="cap-max" placeholder="max cap" style="width:100px;">
+              </div>
+            </div>
+            <div id="bucket-params" style="display:none;margin-top:8px;">
+              <input type="text" class="thresh-val" id="bucket-bins" placeholder="bins: 0, 1, 3, 5, 10" style="width:220px;">
+            </div>
+          </div>
+
+          <!-- Feature name -->
+          <div style="margin-top:18px;">
+            <div class="sdiv">Feature Name <span style="font-weight:400;color:var(--text3)">(auto-generated)</span></div>
+            <input class="input-field" id="feat-name-override" type="text" placeholder="Leave blank for auto-name..." style="font-family:var(--mono);font-size:12px;" oninput="updateLiveJSON()">
+          </div>
+        </div>
+
+        <!-- ─── SP6: Review ─── -->
+        <div class="substep-panel" id="sp6">
+          <div class="substep-title">Review & Add Variable</div>
+          <div id="review-meta" style="margin-bottom:14px;padding:12px 16px;background:var(--bg);border-radius:10px;border:1px solid var(--border);">
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;">
+              <div style="font-size:11px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:0.07em;">Feature Tags</div>
+              <div id="review-leakage-badge" style="font-size:10px;font-weight:700;padding:2px 10px;border-radius:100px;display:inline-block;"></div>
+            </div>
+            <div id="review-feature-tags" class="feat-tags-row" style="margin-bottom:8px;"></div>
+            <div style="font-size:11px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:0.07em;margin-bottom:4px;margin-top:8px;">Deterministic Feature Name</div>
+            <div id="final-feat-name" style="font-family:var(--mono);font-size:13px;color:var(--accent);word-break:break-all;padding:6px 0;"></div>
+          </div>
+          <div id="review-validation-summary" style="margin-bottom:14px;display:none;"></div>
+          <div style="background:var(--bg);border-radius:8px;padding:16px;">
+            <div style="font-size:12px;color:var(--text3);margin-bottom:8px;font-weight:600;">SCHEMA JSON</div>
+            <div class="json-preview" id="final-json-preview"></div>
+          </div>
+        </div>
+
+        <!-- ACTION ROW -->
+        <div class="action-row">
+          <button class="btn btn-back" id="btn-back">← Back</button>
+          <div style="display:flex;gap:10px;">
+            <button class="btn btn-next" id="btn-next" onclick="wizNext()">Next →</button>
+            <button class="btn btn-add" id="btn-add" style="display:none;" onclick="addVariable()">+ Add Variable</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="action-bottom" style="margin-top:16px;">
+        <button class="btn btn-save" onclick="saveBuild()">Save variable to build</button>
+        <button class="btn btn-run" onclick="runBatch()">Run batch for this build</button>
+        <button class="btn" id="btn-crossmap" onclick="openCrossMap()" style="background:rgba(99,102,241,0.1);color:#6366f1;border:1.5px solid rgba(99,102,241,0.25);display:none;">⟺ Cross-Map Features</button>
+        <button class="btn-catalog" id="btn-catalog" onclick="openVarCatalog()" style="display:none;">⚡ Variable Catalog</button>
+      </div>
+      <div class="status-bar" id="status-bar">Stage 1 ready. Continue with variable setup.</div>
+    </div><!-- /left -->
+
+    <!-- VARIABLE CATALOG OVERLAY — v10 (78,753 auto-generated variables) -->
+    <div class="vc-overlay" id="vc-overlay">
+    <div class="vc-modal">
+
+      <!-- HEADER -->
+      <div class="vc-header">
+        <div class="vc-title">
+          <span class="vc-title-accent"></span>
+          <span class="vc-title-copy">
+            <span id="vc-title-text" class="vc-title-text">Variable Catalog</span>
+            <span id="vc-title-meta" class="vc-title-meta">Auto-generated variables</span>
+          </span>
+        </div>
+        <div class="vc-header-actions">
+          <div class="vc-hstats">
+            <div class="vc-hstat"><span class="vc-hstat-val" id="vc-stat-catalog">—</span><span class="vc-hstat-lbl"> total variables</span></div>
+          </div>
+          <button class="vc-close-btn" onclick="closeVarCatalog()">✕</button>
+        </div>
+      </div>
+
+      <!-- FILTER STRIP -->
+      <div class="vc-filter-strip">
+        <select class="vc-filter-dd" id="vc-dd-type" onchange="vcApplyFilters()">
+          <option value="all">type: all</option>
+          <option value="Enquiry">Enquiry</option>
+          <option value="Trade">Trade</option>
+          <option value="Account">Account</option>
+          <option value="Trade History">Trade History</option>
+          <option value="Cross Product">Cross Product</option>
+        </select>
+        <select class="vc-filter-dd" id="vc-dd-agg" onchange="vcApplyFilters()">
+          <option value="all">agg: all</option>
+          <option value="count">count</option><option value="sum">sum</option>
+          <option value="avg">avg</option><option value="max">max</option>
+          <option value="min">min</option><option value="median">median</option>
+          <option value="std">std</option><option value="variance">variance</option>
+          <option value="cv">cv</option><option value="skew">skew</option>
+          <option value="kurtosis">kurtosis</option><option value="percentile">percentile</option>
+          <option value="flag">flag</option><option value="ratio">ratio</option>
+          <option value="index">index</option><option value="value">value</option>
+        </select>
+        <select class="vc-filter-dd" id="vc-dd-window" onchange="vcApplyFilters()">
+          <option value="all">window: all</option>
+          <option value="1m">1m</option><option value="3m">3m</option>
+          <option value="6m">6m</option><option value="12m">12m</option>
+          <option value="24m">24m</option><option value="36m">36m</option>
+        </select>
+        <select class="vc-filter-dd" id="vc-dd-product" onchange="vcApplyFilters()">
+          <option value="all">product: all</option>
+          <option value="PL">PL</option><option value="CC">CC</option>
+          <option value="HL">HL</option><option value="AL">AL</option>
+          <option value="BL">BL</option><option value="GL">GL</option>
+          <option value="OD">OD</option><option value="LAP">LAP</option>
+          <option value="CD">CD</option><option value="TW">TW</option>
+          <option value="CV">CV</option><option value="EL">EL</option>
+        </select>
+        <div class="vc-filter-search">
+          <span class="vc-filter-search-ico">🔍</span>
+          <input type="text" id="vc-search" placeholder="Search variables..." oninput="vcApplyFilters()">
+        </div>
+        <button class="vc-filter-clear" onclick="vcClearFilters()">× Clear</button>
+        <span id="vc-loading-msg" class="vc-loading-msg" style="display:none;">⏳ Generating...</span>
+        <button class="vc-gen-btn" id="vc-generate-btn" onclick="vcGenerateCatalog()">⚡ Generate</button>
+      </div>
+
+      <!-- BODY -->
+      <div class="vc-body">
+        <div class="vc-center">
+          <div class="vc-catalog" id="vc-catalog">
+            <div class="vc-empty">
+              <div class="vc-empty-icon">⚡</div>
+              <div class="vc-empty-title">No variables generated yet</div>
+              <div class="vc-empty-sub">Click Generate in the filter bar to load the Variable Catalog</div>
+            </div>
+          </div>
+          <!-- Pagination -->
+          <div id="vc-pagination" class="vc-pagination" style="display:none;">
+            <span id="vc-page-info" class="vc-page-info"></span>
+            <div class="vc-page-actions">
+              <button class="vc-chip-act" id="vc-prev-btn" onclick="vcPrevPage()" disabled>← Prev</button>
+              <button class="vc-chip-act" id="vc-next-btn" onclick="vcNextPage()">Next →</button>
+            </div>
+          </div>
+        </div>
+        <div class="vc-right">
+          <div class="vc-rp-title">
+            Selected
+            <span class="vc-rp-actions">
+              <button class="vc-chip-act" onclick="vcSelectAllShown()">Page</button>
+              <button class="vc-chip-act" onclick="vcClearAll()">Clear</button>
+            </span>
+          </div>
+          <div class="vc-sel-list" id="vc-sel-list">
+            <div class="vc-sel-empty">Nothing selected yet.<br>Click variables to select.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- FOOTER -->
+      <div class="vc-footer">
+        <div class="vc-footer-info" id="vc-footer-info">
+          No generated variables yet · click Generate to load catalog
+        </div>
+        <button class="vc-add-build-btn" id="vc-add-build-btn" onclick="vcAddToBuild()" disabled>+ Add to Build</button>
+      </div>
+
+    </div>
+    </div>
+
+    <!-- RIGHT SIDE -->
+    <div class="side-col">
+      <div class="side-card">
+        <div class="side-card-title">Current Build <span class="nav-badge" id="sb-count">0</span></div>
+        <div class="side-card-body">
+          <div class="current-empty" id="build-empty">No variables generated yet.</div>
+          <div id="build-feat-list"></div>
+        </div>
+        <div id="download-code-section" style="display:none;padding:10px 14px 12px;border-top:1px solid var(--border);">
+          <div style="font-size:10px;font-weight:700;color:var(--text3);letter-spacing:.05em;text-transform:uppercase;margin-bottom:8px;">📥 Download Code</div>
+          <div style="display:flex;gap:7px;">
+            <button id="btn-dl-python" onclick="downloadBuildCode('python')" style="flex:1;padding:7px 0;border-radius:8px;border:1.5px solid var(--border);background:var(--white);font-size:11px;font-weight:700;color:var(--text2);cursor:pointer;transition:all .15s;display:flex;align-items:center;justify-content:center;gap:4px;" onmouseover="this.style.borderColor='var(--accent)';this.style.color='var(--accent)';this.style.background='var(--accent-light)'" onmouseout="this.style.borderColor='var(--border)';this.style.color='var(--text2)';this.style.background='var(--white)'">🐍 Python</button>
+            <button id="btn-dl-pyspark" onclick="downloadBuildCode('pyspark')" style="flex:1;padding:7px 0;border-radius:8px;border:1.5px solid var(--border);background:var(--white);font-size:11px;font-weight:700;color:var(--text2);cursor:pointer;transition:all .15s;display:flex;align-items:center;justify-content:center;gap:4px;" onmouseover="this.style.borderColor='#e87d13';this.style.color='#e87d13';this.style.background='rgba(232,125,19,0.08)'" onmouseout="this.style.borderColor='var(--border)';this.style.color='var(--text2)';this.style.background='var(--white)'">⚡ PySpark</button>
+          </div>
+        </div>
+      </div>
+      <div class="side-card" id="intermediate-variable-card" style="display:none;">
+        <div class="side-card-title">Intermidate Variable</div>
+        <div class="beneficiary-panel">
+          <div class="beneficiary-panel-subtitle" id="intermediate-variable-subtitle">All product codes with full form and short description</div>
+          <div class="beneficiary-list-shell">
+            <div class="beneficiary-list" id="beneficiaryList"></div>
+          </div>
+          <div class="beneficiary-page" id="beneficiaryPageNav" style="display:none;">
+            <button class="beneficiary-page-btn" id="beneficiaryPrevBtn" type="button" aria-label="Previous page">‹</button>
+            <span class="beneficiary-page-info" id="beneficiaryPageInfo">1-5</span>
+            <button class="beneficiary-page-btn" id="beneficiaryNextBtn" type="button" aria-label="Next page">›</button>
+          </div>
+        </div>
+      </div>
+      <div class="side-card">
+        <div class="side-card-title">Pre-defined Templates</div>
+        <div class="predef-filters" id="pd-filters">
+          <div class="pd-filter sel" onclick="filterPD('all',this)">All</div>
+          <div class="pd-filter" onclick="filterPD('product_based',this)" style="color:var(--trade);">Product Based</div>
+          <div class="pd-filter" onclick="filterPD('time_based',this)" style="color:var(--accent);">Time Based</div>
+          <div class="pd-filter" onclick="filterPD('all_other',this)" style="color:var(--text2);">All Other</div>
+        </div>
+        <div class="pd-field-row" id="pd-field-filters" style="display:none;">
+          <label class="pd-field-label" id="pd-field-label" for="pd-field-select">Condition</label>
+          <select class="pd-field-select" id="pd-field-select" onchange="filterPDCondition(this.value)">
+            <option value="all">All</option>
+          </select>
+        </div>
+        <div class="predef-list" id="pd-list"></div>
+        <div class="predef-page">
+          <button class="pg-btn" onclick="pdPageNav(-1)">‹</button>
+          <span id="pd-page-info" style="font-size:11px;color:var(--text3);padding:0 4px;">1 / 1</span>
+          <button class="pg-btn" onclick="pdPageNav(1)">›</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div><!-- /screen-builder -->
+
+<!-- CROSS-MAP SCREEN -->
+<div class="screen" id="screen-crossmap" style="display:none;">
+  <div style="max-width:1300px;margin:0 auto;padding:24px 32px;">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:24px;">
+      <div>
+        <div style="display:flex;align-items:center;gap:12px;margin-bottom:4px;">
+          <button onclick="closeCrossMap()" style="padding:5px 12px;border-radius:7px;border:1.5px solid var(--border);background:var(--white);font-size:12px;font-weight:600;color:var(--text2);cursor:pointer;">← Back to Builder</button>
+          <div style="font-family:var(--display);font-size:22px;font-weight:800;color:var(--text);">Feature Cross-Mapping</div>
+          <span style="font-size:10px;font-weight:700;padding:3px 9px;border-radius:5px;background:var(--accent-light);color:var(--accent);letter-spacing:0.06em;">BETA</span>
+        </div>
+        <div style="font-size:13px;color:var(--text3);">Detect relationships, shared columns, window overlaps, and redundancy across your feature build.</div>
+      </div>
+      <div style="display:flex;gap:10px;">
+        <button class="btn" style="background:var(--white);border:1.5px solid var(--border);color:var(--text2);" onclick="exportCrossMap()">↓ Export Map JSON</button>
+        <button class="btn btn-add" onclick="applyCompositeFeatures()">＋ Add Composite Features</button>
+      </div>
+    </div>
+    <div id="xmap-summary-bar" style="display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin-bottom:20px;"></div>
+    <div style="display:grid;grid-template-columns:260px 1fr 300px;gap:16px;align-items:start;">
+      <div style="background:var(--white);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;">
+        <div style="padding:12px 16px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;">
+          <div style="font-size:12px;font-weight:700;color:var(--text2);">Select Features</div>
+          <div style="display:flex;gap:6px;">
+            <button class="xmap-ctrl-btn" onclick="xmapSelectAll()">All</button>
+            <button class="xmap-ctrl-btn" onclick="xmapSelectNone()">None</button>
+          </div>
+        </div>
+        <div style="padding:8px;max-height:600px;overflow-y:auto;" id="xmap-feat-checkboxes"></div>
+      </div>
+      <div>
+        <div style="display:flex;gap:0;border-bottom:2px solid var(--border);margin-bottom:16px;" id="xmap-tabs">
+          <div class="xmap-tab sel" onclick="xmapTab('matrix',this)">🔲 Relationship Matrix</div>
+          <div class="xmap-tab" onclick="xmapTab('column',this)">🗂 Shared Columns</div>
+          <div class="xmap-tab" onclick="xmapTab('window',this)">⏱ Window Alignment</div>
+          <div class="xmap-tab" onclick="xmapTab('redundancy',this)">⚠ Redundancy Check</div>
+          <div class="xmap-tab" onclick="xmapTab('composite',this)">✦ Composite Builder</div>
+        </div>
+        <div class="xmap-panel" id="xpanel-matrix"><div id="xmap-matrix-container"></div><div id="xmap-cell-detail" style="display:none;margin-top:14px;padding:14px;background:var(--bg);border-radius:10px;border:1px solid var(--border);"></div></div>
+        <div class="xmap-panel" id="xpanel-column" style="display:none;"><div id="xmap-column-groups"></div></div>
+        <div class="xmap-panel" id="xpanel-window" style="display:none;"><div id="xmap-window-chart"></div><div id="xmap-window-alerts" style="margin-top:12px;"></div></div>
+        <div class="xmap-panel" id="xpanel-redundancy" style="display:none;"><div id="xmap-redundancy-list"></div></div>
+        <div class="xmap-panel" id="xpanel-composite" style="display:none;">
+          <div style="display:grid;grid-template-columns:1fr auto 1fr;gap:12px;align-items:center;margin-bottom:12px;">
+            <div><div class="sdiv" style="margin-top:0;font-size:10px;">Feature A</div><select id="comp-feat-a" class="rule-field" style="width:100%;font-size:11px;" onchange="updateCompositePreview()"><option value="">— Select Feature —</option></select></div>
+            <div><div class="sdiv" style="margin-top:0;font-size:10px;">Operation</div><select id="comp-op" class="rule-op" style="width:70px;" onchange="updateCompositePreview()"><option value="divide">÷</option><option value="subtract">−</option><option value="add">+</option><option value="multiply">×</option><option value="delta_pct">Δ%</option></select></div>
+            <div><div class="sdiv" style="margin-top:0;font-size:10px;">Feature B</div><select id="comp-feat-b" class="rule-field" style="width:100%;font-size:11px;" onchange="updateCompositePreview()"><option value="">— Select Feature —</option></select></div>
+          </div>
+          <div style="margin-bottom:10px;"><div class="sdiv" style="margin-top:0;font-size:10px;">Output Name</div><input class="input-field" id="comp-name-override" type="text" style="font-family:var(--mono);font-size:11px;" placeholder="composite_feature_name"></div>
+          <div id="comp-preview" class="formula-mono" style="margin-bottom:12px;min-height:52px;">(select features to preview)</div>
+          <div id="xmap-suggested-composites" style="margin-top:16px;"></div>
+        </div>
+      </div>
+      <div>
+        <div style="background:var(--white);border:1px solid var(--border);border-radius:var(--radius);padding:14px 16px;margin-bottom:12px;">
+          <div style="font-size:11px;font-weight:700;color:var(--text2);margin-bottom:10px;text-transform:uppercase;letter-spacing:0.07em;">Relationship Legend</div>
+          <div id="xmap-legend"></div>
+        </div>
+        <div style="background:var(--white);border:1px solid var(--border);border-radius:var(--radius);padding:14px 16px;">
+          <div style="font-size:11px;font-weight:700;color:var(--text2);margin-bottom:10px;text-transform:uppercase;letter-spacing:0.07em;">Build Insights</div>
+          <div id="xmap-insights"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"><span id="toast-msg">Done!</span></div>
+
+</div><!-- /page -->
+  </div><!-- /.builder-shell -->
+</div><!-- end #page-builder -->
+
+
+<!-- ═══ HISTORY PACK GENERATOR MODAL ═══ -->
+<div class="expl-overlay" id="expl-overlay" onclick="closeExplosionModal(event)">
+  <div class="expl-modal" onclick="event.stopPropagation()">
+    <div class="expl-header">
+      <div class="expl-header-left">
+        <div>
+          <div class="expl-title">⚡ History Pack Generator</div>
+          <div class="expl-subtitle">Smart curated Trade History variables — select, preview, add in bulk</div>
+        </div>
+      </div>
+      <div class="expl-close" onclick="closeExplosionModal()">✕</div>
+    </div>
+    <div class="expl-body">
+      <div class="expl-section">
+        <div class="expl-section-label">① Select Feature Pack</div>
+        <div class="pack-grid" id="expl-pack-grid">
+          <div class="pack-tile" onclick="selectPack('balance',this)"><div class="pack-tile-icon">💰</div><div class="pack-tile-label">Balance</div></div>
+          <div class="pack-tile" onclick="selectPack('delinquency',this)"><div class="pack-tile-icon">⚠️</div><div class="pack-tile-label">Delinquency</div></div>
+          <div class="pack-tile" onclick="selectPack('utilization',this)"><div class="pack-tile-icon">📊</div><div class="pack-tile-label">Utilization</div></div>
+          <div class="pack-tile" onclick="selectPack('recency',this)"><div class="pack-tile-icon">🕐</div><div class="pack-tile-label">Recency</div></div>
+          <div class="pack-tile" onclick="selectPack('volume',this)"><div class="pack-tile-icon">🔢</div><div class="pack-tile-label">Volume</div></div>
+          <div class="pack-tile" onclick="selectPack('trend',this)"><div class="pack-tile-icon">📈</div><div class="pack-tile-label">Trend</div></div>
+          <div class="pack-tile" onclick="selectPack('balance_dynamics',this)"><div class="pack-tile-icon">⚖️</div><div class="pack-tile-label">Bal Dynamics</div></div>
+          <div class="pack-tile" onclick="selectPack('risk_ratio',this)"><div class="pack-tile-icon">🎯</div><div class="pack-tile-label">Risk Ratio</div></div>
+        </div>
+        <div class="expl-pack-desc" id="expl-pack-desc"></div>
+      </div>
+      <div class="expl-section" id="expl-seg-section" style="display:none;">
+        <div class="expl-section-label">② Segment</div>
+        <div class="seg-chips">
+          <div class="seg-chip sel" onclick="selectSegment('all',this)">All</div>
+          <div class="seg-chip" onclick="selectSegment('cc',this)">CC</div>
+          <div class="seg-chip" onclick="selectSegment('pl',this)">PL</div>
+          <div class="seg-chip" onclick="selectSegment('hl',this)">HL</div>
+          <div class="seg-chip" onclick="selectSegment('al',this)">AL</div>
+          <div class="seg-chip" onclick="selectSegment('secured',this)">Secured</div>
+          <div class="seg-chip" onclick="selectSegment('unsecured',this)">Unsecured</div>
+        </div>
+      </div>
+      <div class="expl-section" id="expl-preview-section" style="display:none;">
+        <div class="expl-preview-header">
+          <div class="expl-section-label" style="margin-bottom:0;">③ Select Variables to Add</div>
+          <div style="display:flex;align-items:center;gap:10px;">
+            <div class="expl-preview-count"><strong id="expl-sel-count">0</strong> selected</div>
+            <div class="expl-ctrl-row">
+              <div class="expl-ctrl-btn" onclick="explSelectAll()">All</div>
+              <div class="expl-ctrl-btn" onclick="explSelectNone()">None</div>
+            </div>
+          </div>
+        </div>
+        <div class="expl-preview-list" id="expl-preview-list"><div class="expl-empty">Select a pack above to see variables</div></div>
+      </div>
+    </div>
+    <div class="expl-footer">
+      <div class="expl-footer-info" id="expl-footer-info">Select a pack to begin</div>
+      <div style="display:flex;gap:8px;align-items:center;">
+        <button class="btn btn-back" style="padding:7px 16px;font-size:12px;" onclick="closeExplosionModal()">Cancel</button>
+        <button class="expl-add-btn" id="expl-add-btn" disabled onclick="explAddSelected()">+ Add Selected</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ FEATURE FACTORY MODAL ═══ -->
+<div class="factory-overlay" id="factory-overlay" onclick="closeFeatureFactory(event)">
+  <div class="factory-modal" onclick="event.stopPropagation()">
+    <div class="factory-header">
+      <div class="factory-header-left">
+        <div class="factory-title">🏭 Feature Factory — Explosion Engine <span class="factory-badge">NEW</span></div>
+        <div class="factory-subtitle">Select Measure Groups × Window Groups × Segment Groups → auto-generate 100–3000+ features</div>
+      </div>
+      <div class="expl-close" onclick="closeFeatureFactory()">✕</div>
+    </div>
+    <div class="factory-body">
+      <div class="factory-left">
+        <div class="factory-section">
+          <div class="factory-section-label">① Measure Groups</div>
+          <div class="fac-cat-tabs" id="factory-cat-tabs"></div>
+          <div class="fac-cat-actions">
+            <div class="expl-ctrl-btn" onclick="factorySelectCatAll()">✓ All in tab</div>
+            <div class="expl-ctrl-btn" onclick="factorySelectCatNone()">✗ Clear tab</div>
+            <div class="expl-ctrl-btn" onclick="factorySelectAllGroups()">⚡ Select All 13</div>
+            <div class="expl-ctrl-btn" onclick="factoryClearAll()">✗ Clear All</div>
+          </div>
+          <div class="fac-mg-grid" id="factory-measure-grid"></div>
+        </div>
+        <div class="factory-section">
+          <div class="factory-section-label">⚡ Quick Presets</div>
+          <div class="fac-preset-row">
+            <div class="fac-preset-btn" onclick="applyFactoryPreset('scorecard')">📋 Scorecard Starter (~200)</div>
+            <div class="fac-preset-btn" onclick="applyFactoryPreset('velocity_pack')">🚀 Velocity Pack (~350)</div>
+            <div class="fac-preset-btn" onclick="applyFactoryPreset('payment_deep')">💳 Payment Deep (~300)</div>
+            <div class="fac-preset-btn" onclick="applyFactoryPreset('full_enterprise')">🏭 Full Enterprise (3000+)</div>
+          </div>
+        </div>
+        <div class="factory-section"><div class="factory-section-label">② Window Group</div><div class="fac-wg-chips" id="factory-window-grid"></div></div>
+        <div class="factory-section"><div class="factory-section-label">③ Segment Group</div><div class="fac-sg-chips" id="factory-segment-grid"></div></div>
+        <div class="factory-section"><div class="factory-section-label">④ Aggregation Override</div><div class="fac-agg-wrap" id="factory-agg-chips"></div></div>
+        <div class="factory-section">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;">
+            <div class="factory-section-label" style="margin-bottom:0;">⑤ Feature Preview</div>
+            <div style="display:flex;gap:6px;"><div class="expl-ctrl-btn" onclick="factorySelectAll()">All</div><div class="expl-ctrl-btn" onclick="factorySelectNone()">None</div></div>
+          </div>
+          <div class="factory-preview expl-preview-list" id="factory-preview-list"><div class="expl-empty">Select measure groups above to preview</div></div>
+        </div>
+      </div>
+      <div class="factory-right">
+        <div class="factory-count-box">
+          <div id="factory-count" style="min-height:40px;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:4px;"><span style="color:var(--text3);font-size:12px;">Select measure groups<br>to see count</span></div>
+          <div class="fac-matrix" id="factory-matrix"></div>
+        </div>
+        <div style="background:var(--tradeh-light);border-radius:10px;padding:12px;border:1px solid rgba(3,105,161,0.15);">
+          <div style="font-size:10px;font-weight:800;color:var(--tradeh);text-transform:uppercase;letter-spacing:0.07em;margin-bottom:8px;">💡 Explosion Formula</div>
+          <div style="font-size:10px;color:var(--text3);line-height:1.6;"><strong>Measure Group</strong> → constituent measures<br><strong>Window Group</strong> → per-window features<br><strong>Segment Group</strong> → per-segment variants<br><br><span style="font-family:var(--mono);font-size:9px;background:rgba(3,105,161,0.08);padding:4px 6px;border-radius:4px;display:block;">M × Agg × Win × Seg = Features</span></div>
+        </div>
+        <div style="background:var(--warn-light);border-radius:10px;padding:12px;border:1px solid rgba(217,119,6,0.2);">
+          <div style="font-size:10px;font-weight:800;color:var(--warn);text-transform:uppercase;letter-spacing:0.07em;margin-bottom:6px;">🏭 Group Reference</div>
+          <div style="font-size:10px;color:var(--text3);line-height:1.7;"><strong>Core</strong> — balance, DPD, util, overdue, risk, recency (6)<br><strong>Velocity</strong> — balance vel, risk momentum, beh. vel (3)<br><strong>Behaviour</strong> — payment patterns, gap analysis (2)<br><strong>Severity</strong> — DPD severity, stability indices (2)<br><strong>Credit Line</strong> — limit dynamics (1)</div>
+        </div>
+      </div>
+    </div>
+    <div class="factory-footer">
+      <div style="font-size:11px;color:var(--text3);">Duplicates auto-skipped · Deduplication applied</div>
+      <div style="display:flex;gap:8px;align-items:center;">
+        <button class="btn btn-back" style="padding:8px 16px;font-size:12px;" onclick="closeFeatureFactory()">Cancel</button>
+        <button class="factory-add-btn" id="factory-add-btn" disabled onclick="factoryAddFeatures()">🏭 Add Features</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Scripts — defer ensures DOM is fully parsed before any script executes -->
+<script src="app.js" defer></script>
+<script src="api.js" defer></script>
+<script src="auth.js" defer></script>
+
+<script src="cascade_bridge.js" defer></script>
+</body>
+</html>
